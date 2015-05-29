@@ -1325,7 +1325,7 @@ th {
   display: none;
 }
 .table-filtered .bar-chart {
-  background-color: #7cbce8;
+  background-color: #94c2c6;
 }
 .table-filtered .active-row th.title {
   color: #333333;
@@ -1334,7 +1334,7 @@ th {
   display: inline;
 }
 .table-filtered .active-row .bar-chart {
-  background-color: #006db6;
+  background-color: #22828a;
 }
 .table-stats th.title {
   font-weight: normal;
@@ -1369,27 +1369,27 @@ th {
   padding: 3px 10px;
 }
 .table-key td.hm-1 {
-  background-color: #ffeebb;
+  background-color: #f5dad8;
   color: #333333;
 }
 .table-key td.hm-2 {
-  background-color: #ffdb76;
-  color: #333333;
+  background-color: #eab6b1;
+  color: #ffffff;
 }
 .table-key td.hm-3 {
-  background-color: #ffb754;
+  background-color: #e19790;
   color: #ffffff;
 }
 .table-key td.hm-4 {
-  background-color: #ff9041;
+  background-color: #d97d73;
   color: #ffffff;
 }
 .table-key td.hm-5 {
-  background-color: #f06132;
+  background-color: #a56368;
   color: #ffffff;
 }
 .table-key td.hm-6 {
-  background-color: #e13322;
+  background-color: #6b4760;
   color: #ffffff;
 }
 .table-responsive {
@@ -3000,8 +3000,8 @@ h1.logo {
   height: 50px;
   width: 176px;
   margin: 0 auto;
-  background: url('../img/logo-eu.png') 50% 50% no-repeat;
-  background-image: url('../img/logo-eu.svg'), none;
+  background: url('../img/logo-cambridge.png') 50% 50% no-repeat;
+  background-image: url('../img/logo-cambridge.svg'), none;
 }
 .company-search {
   border-top: 1px solid #2d2d2d;
@@ -3126,7 +3126,7 @@ h1.logo {
 }
 .intro {
   height: 388px;
-  background: #006db6 url('../img/banner-eu.jpg') 50% 100% no-repeat;
+  background: #22828a url('../img/banner-cambridge.jpg') 50% 100% no-repeat;
   background-size: cover;
   color: #fff;
   vertical-align: middle;
@@ -3425,7 +3425,7 @@ h1.logo {
   float: left;
   width: 0%;
   height: 100%;
-  background-color: #006db6;
+  background-color: #22828a;
   -webkit-transition: width 0.6s ease;
   -o-transition: width 0.6s ease;
   transition: width 0.6s ease;
