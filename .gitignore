@@ -1,0 +1,7 @@
+/*.org
+
+.DS_Store
+/dump
+/target
+/checkouts
+/.lein-repl-history

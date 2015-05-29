@@ -1,0 +1,11 @@
+{"version":3,
+ "file":
+ "/Users/mccraig/dev/clustermap.all/clustermap-eustartuphubs/resources/public/cljs/clustermap/formats/string.js",
+ "sources":["string.cljs"],
+ "lineCount":35,
+ "mappings":
+ ";AAAA;;AAEA;;;sCAAA,tCAAMG;2CAANH,UAAA,AAAA,IAAAC,aAAAD,qBAAA,AAAAE,wBAAAD,WAAA,IAAA,MAAA,pGAAiBG,EAAEC,6CAAQC,qDACzB,GAAI,OAAA,NAAIF;CACNC;;CACA,IAAAE,0BAAA,AAAA,oBAAAA,1BAAID;CAAJC;;CAAU,6DAAA,NAAKF;;;;0BAHFD,EAAEC;IAAnBL;EAAAA;4CAAAA,PAAiBI,EAAEC;;;IAAFD;;IAAEC;IAAnBL;kCAAAA,PAAiBI,EAAEC",
+ "names":
+ ["p__30968", "vec__30970", "cljs.core/nth",
+  "clustermap.formats.string/pluralize", "n", "word", "irreg",
+  "or__11514__auto__"]}
