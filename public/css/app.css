@@ -3419,6 +3419,9 @@ h1.logo {
 .section-credits {
   background: #eeeeee;
 }
+.section-credits h4 {
+  font-weight: normal;
+}
 .section-credits img {
   display: block;
   margin-top: 20px;
