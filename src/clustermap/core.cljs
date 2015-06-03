@@ -395,10 +395,10 @@
                                 }
                         :timeline-data nil}
 
-   :company-turnover-timeline {:query {:index-name "company-funding-rounds"
-                                       :index-type "funding-round"
-                                       :time-variable "?raised_date"
-                                       :metrics {:variable :!raised_amount_usd :title "Raised (£)"}
+   :company-turnover-timeline {:query {:index-name "company-accounts"
+                                       :index-type "accounts"
+                                       :time-variable "?accounts_date"
+                                       :metrics {:variable :!turnover :title "Turnover (£)"}
                                        :interval "year"
                                        :before (time/today-str)}
                                :timeline-data nil}
@@ -614,6 +614,8 @@
     :f company-info/company-info-component
     :target "company-info-component"
     :paths {:metadata [:company-info]
+            :turnover-timeline [:company-turnover-timeline]
+            :employment-timeline [:company-employment-timeline]
             :filter-spec [:selection-filter-spec :composed :all]}}
 
    ]
