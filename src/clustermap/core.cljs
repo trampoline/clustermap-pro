@@ -122,23 +122,23 @@
 
                          ;; specifications for dynamic components
                          :component-specs [
-                                           {:id :hub
-                                            :type :tag-checkboxes
-                                            :label "Hub"
-                                            :sorted true
-                                            :tag-type "startup_region"
-                                            :tags [{:value "nuts_1__UKI" :label "London"}
-                                                   {:value "nuts_1__FR1" :label "Paris"}
-                                                   {:value "nuts_2__UKD3" :label "Manchester"}
-                                                   {:value "nuts_2__FI1B" :label "Helsinki"}
-                                                   {:value "nuts_2__SE11" :label "Stockholm"}
-                                                   {:value "nuts_1__BE1" :label "Brussels"}
-                                                   {:value "nuts_2__RO32" :label "Bucuresti"}
-                                                   {:value "nuts_1__ES3" :label "Madrid"}
-                                                   {:value "nuts_3__DE212" :label "Munich"}
-                                                   {:value "nuts_1__DE3" :label "Berlin"}
+                                           ;; {:id :hub
+                                           ;;  :type :tag-checkboxes
+                                           ;;  :label "Hub"
+                                           ;;  :sorted true
+                                           ;;  :tag-type "startup_region"
+                                           ;;  :tags [{:value "nuts_1__UKI" :label "London"}
+                                           ;;         {:value "nuts_1__FR1" :label "Paris"}
+                                           ;;         {:value "nuts_2__UKD3" :label "Manchester"}
+                                           ;;         {:value "nuts_2__FI1B" :label "Helsinki"}
+                                           ;;         {:value "nuts_2__SE11" :label "Stockholm"}
+                                           ;;         {:value "nuts_1__BE1" :label "Brussels"}
+                                           ;;         {:value "nuts_2__RO32" :label "Bucuresti"}
+                                           ;;         {:value "nuts_1__ES3" :label "Madrid"}
+                                           ;;         {:value "nuts_3__DE212" :label "Munich"}
+                                           ;;         {:value "nuts_1__DE3" :label "Berlin"}
 
-                                                   ]}
+                                           ;;         ]}
 
                                            ;; {:id :boundaryline
                                            ;;  :type :external
@@ -154,27 +154,27 @@
                                            ;;                                    bl-name (when boundaryline-id (aget bl "compact_name"))]
                                            ;;                                (set-filter bl-filter bl-name))))))}
 
-                                           {:id :age
-                                            :type :checkboxes
-                                            :label "Age"
-                                            :options [;; {:value "any" :filter nil :label "Any" :omit-description true}
-                                                      {:value "new" :label "< 5 years" :filter {:range {"!formation_date" {:gte "2010-01-01"}}}}
-                                                      {:value "mid" :label "5 - 10 years" :filter {:range {"!formation_date" {:gte "2005-01-01"
-                                                                                                                              :lt "2010-01-01"}}}}
-                                                      {:value "old" :label "10 - 15 years" :filter {:range {"!formation_date" {:gte "2000-01-01"
-                                                                                                                               :lt "2005-01-01"}}}}
-                                                      {:value "oldest" :label ">= 15 years" :filter {:range {"!formation_date" {:lt "2000-01-01"}}}}]}
+                                           ;; {:id :age
+                                           ;;  :type :checkboxes
+                                           ;;  :label "Age"
+                                           ;;  :options [;; {:value "any" :filter nil :label "Any" :omit-description true}
+                                           ;;            {:value "new" :label "< 5 years" :filter {:range {"!formation_date" {:gte "2010-01-01"}}}}
+                                           ;;            {:value "mid" :label "5 - 10 years" :filter {:range {"!formation_date" {:gte "2005-01-01"
+                                           ;;                                                                                    :lt "2010-01-01"}}}}
+                                           ;;            {:value "old" :label "10 - 15 years" :filter {:range {"!formation_date" {:gte "2000-01-01"
+                                           ;;                                                                                     :lt "2005-01-01"}}}}
+                                           ;;            {:value "oldest" :label ">= 15 years" :filter {:range {"!formation_date" {:lt "2000-01-01"}}}}]}
 
-                                           {:id :total-funding
-                                            :type :checkboxes
-                                            :label "Total funding"
-                                            :options [;; {:value "any" :label "Any" :filter nil :omit-description true}
-                                                      {:value "min" :label "< €500k" :filter {:range {"!total_funding" {:lt 500000}}}}
-                                                      {:value "low" :label "€500k - €5m" :filter {:range {"!total_funding" {:gte 500000 :lt 5000000}}}}
-                                                      {:value "lowmid" :label "€5m - €10m" :filter {:range {"!total_funding" {:gte 5000000 :lt 10000000}}}}
-                                                      {:value "highmid" :label "€10m - €100m" :filter {:range {"!total_funding" {:gte 10000000 :lt 100000000}}}}
-                                                      {:value "high" :label "> €100m" :filter {:range {"!total_funding" {:gte 100000000}}}}
-                                                      ]}
+                                           ;; {:id :total-funding
+                                           ;;  :type :checkboxes
+                                           ;;  :label "Total funding"
+                                           ;;  :options [;; {:value "any" :label "Any" :filter nil :omit-description true}
+                                           ;;            {:value "min" :label "< €500k" :filter {:range {"!total_funding" {:lt 500000}}}}
+                                           ;;            {:value "low" :label "€500k - €5m" :filter {:range {"!total_funding" {:gte 500000 :lt 5000000}}}}
+                                           ;;            {:value "lowmid" :label "€5m - €10m" :filter {:range {"!total_funding" {:gte 5000000 :lt 10000000}}}}
+                                           ;;            {:value "highmid" :label "€10m - €100m" :filter {:range {"!total_funding" {:gte 10000000 :lt 100000000}}}}
+                                           ;;            {:value "high" :label "> €100m" :filter {:range {"!total_funding" {:gte 100000000}}}}
+                                           ;;            ]}
 
                                            ;; {:id :latest-turnover
                                            ;;  :type :checkboxes
@@ -267,9 +267,9 @@
          :datasource "companies"
          ;; :boundaryline-collections [[0 "nuts_0"] [4 "nuts_1"] [6 "nuts_2"] [7 "nuts_3"] [8 "uk_boroughs"] [10 "uk_wards"]]
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "uk_boroughs"] [11 "uk_wards"]]
-         :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
-         ;; :boundaryline-collections [[0 "uk_regions"] [5 "uk_counties"] [7 "uk_boroughs"] [10 "uk_wards"]]
-         :controls {:initial-bounds [[71.0 35.0] [35.0 -11.0]]
+         ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
+         :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
+         :controls {:initial-bounds [[51.95 -0.76] [52.76 1.07]]
                     :map-options {:zoomControl true
                                   :dragging true
                                   :touchZoom true
@@ -344,10 +344,10 @@
                                                             :metric :sum
                                                             :label "Total employees"
                                                             :render-fn (fn [v] (money/readable v :sf 2 :curr ""))}
-                                                           {:key :!total_funding
-                                                            :metric :sum
-                                                            :label "Total funding"
-                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr "€"))}
+                                                           ;; {:key :!total_funding
+                                                           ;;  :metric :sum
+                                                           ;;  :label "Total funding"
+                                                           ;;  :render-fn (fn [v] (money/readable v :sf 2 :curr "€"))}
                                                            ]}}
                     :summary-stats nil
                     }
@@ -360,12 +360,13 @@
                        :size 50
                        :columns [
                                  {:key :!name :sortable true :label "Name" :render-fn company-link-render-fn}
-                                 {:key :?tags :label "Hub" :render-fn (fn [tags] (->> tags (filter (fn [t] (= "startup_region" (:type t)))) first :description))}
+                                 ;; {:key :?tags :label "Hub" :render-fn (fn [tags] (->> tags (filter (fn [t] (= "startup_region" (:type t)))) first :description))}
                                  {:key :!formation_date :sortable true :label "Formation date" :render-fn #(time/format-date %)}
-                                 {:key :!latest_accounts_date :label "Filing date" :render-fn #(time/format-date %)}
+                                 ;; {:key :!latest_accounts_date :label "Filing date" :render-fn #(time/format-date %)}
                                  {:key :!latest_turnover :sortable true :label "Turnover" :render-fn #(money/readable % :sf 3 :curr "")}
                                  {:key :!latest_employee_count :sortable true :label "Employees" :render-fn #(num/readable % :dec 0)}
-                                 {:key :!total_funding :sortable true :label "Funding" :render-fn #(money/readable % :sf 3 :curr "")}]}
+                                 ;; {:key :!total_funding :sortable true :label "Funding" :render-fn #(money/readable % :sf 3 :curr "")}
+                                 ]}
             :table-data nil}
 
    :investment-timeline {:query {:index-name "company-funding-rounds"
@@ -528,16 +529,16 @@
     :target "company-close"
     :paths {:nav-button [:company-close]}}
 
-   {:name :city-barchart-var-select
-    :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!total_funding" "Total investment (€)"] ["!latest_employee_count" "Employee count"] ["!latest_turnover" "Turnover (€)"]])
-    :target "city-barchart-var-select-component"
-    :path [:city-barchart :query]}
+   ;; {:name :city-barchart-var-select
+   ;;  :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!total_funding" "Total investment (€)"] ["!latest_employee_count" "Employee count"] ["!latest_turnover" "Turnover (€)"]])
+   ;;  :target "city-barchart-var-select-component"
+   ;;  :path [:city-barchart :query]}
 
-   {:name :region-investment-histogram
-    :f tag-histogram/tag-histogram
-    :target "city-barchart-component"
-    :paths {:tag-histogram [:city-barchart]
-            :filter-spec [:dynamic-filter-spec :composed :all]}}
+   ;; {:name :region-investment-histogram
+   ;;  :f tag-histogram/tag-histogram
+   ;;  :target "city-barchart-component"
+   ;;  :paths {:tag-histogram [:city-barchart]
+   ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
 
    {:name :sector-histogram
     :f tag-histogram/tag-histogram
@@ -551,16 +552,16 @@
     :paths {:table-state [:table]
             :filter-spec [:dynamic-filter-spec :composed :all]}}
 
-   {:name :investment-timeline
-    :f timeline-chart/timeline-chart
-    :target "investment-timeline-component"
-    :paths {:timeline-chart [:investment-timeline]
-            :filter-spec [:dynamic-filter-spec :composed :all]}}
+   ;; {:name :investment-timeline
+   ;;  :f timeline-chart/timeline-chart
+   ;;  :target "investment-timeline-component"
+   ;;  :paths {:timeline-chart [:investment-timeline]
+   ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
 
-   {:name :invesetment-timeline-var-select
-    :f (partial select-chooser/select-chooser-component "Variable" :metric [[:sum "Total investment (€)"][:count "Number of deals"]])
-    :target "investment-timeline-var-select-component"
-    :path [:investment-timeline :query :metrics]}
+   ;; {:name :invesetment-timeline-var-select
+   ;;  :f (partial select-chooser/select-chooser-component "Variable" :metric [[:sum "Total investment (€)"][:count "Number of deals"]])
+   ;;  :target "investment-timeline-var-select-component"
+   ;;  :path [:investment-timeline :query :metrics]}
 
    ;; {:name :employment-timeline
    ;;  :f timeline-chart/timeline-chart
@@ -620,7 +621,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;; load and index boundarylines
 
-(def bl-collections ["nuts_2"])
+(def bl-collections ["uk_counties"])
 
 (defn load-boundaryline-collection-indexes
   [state]
