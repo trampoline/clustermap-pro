@@ -169,22 +169,22 @@
                                            ;;  :type :checkboxes
                                            ;;  :label "Total funding"
                                            ;;  :options [;; {:value "any" :label "Any" :filter nil :omit-description true}
-                                           ;;            {:value "min" :label "< €500k" :filter {:range {"!total_funding" {:lt 500000}}}}
-                                           ;;            {:value "low" :label "€500k - €5m" :filter {:range {"!total_funding" {:gte 500000 :lt 5000000}}}}
-                                           ;;            {:value "lowmid" :label "€5m - €10m" :filter {:range {"!total_funding" {:gte 5000000 :lt 10000000}}}}
-                                           ;;            {:value "highmid" :label "€10m - €100m" :filter {:range {"!total_funding" {:gte 10000000 :lt 100000000}}}}
-                                           ;;            {:value "high" :label "> €100m" :filter {:range {"!total_funding" {:gte 100000000}}}}
+                                           ;;            {:value "min" :label "< £500k" :filter {:range {"!total_funding" {:lt 500000}}}}
+                                           ;;            {:value "low" :label "£500k - £5m" :filter {:range {"!total_funding" {:gte 500000 :lt 5000000}}}}
+                                           ;;            {:value "lowmid" :label "£5m - £10m" :filter {:range {"!total_funding" {:gte 5000000 :lt 10000000}}}}
+                                           ;;            {:value "highmid" :label "£10m - £100m" :filter {:range {"!total_funding" {:gte 10000000 :lt 100000000}}}}
+                                           ;;            {:value "high" :label "> £100m" :filter {:range {"!total_funding" {:gte 100000000}}}}
                                            ;;            ]}
 
                                            ;; {:id :latest-turnover
                                            ;;  :type :checkboxes
                                            ;;  :label "Turnover"
                                            ;;  :options [;; {:value "any" :label "Any" :filter nil :omit-description true}
-                                           ;;            {:value "min" :label "< €500k" :filter {:range {"!latest_turnover" {:lt 500000}}}}
-                                           ;;            {:value "low" :label "€500k - €5m" :filter {:range {"!latest_turnover" {:gte 500000 :lt 5000000}}}}
-                                           ;;            {:value "lowmid" :label "€5m - €10m" :filter {:range {"!latest_turnover" {:gte 5000000 :lt 10000000}}}}
-                                           ;;            {:value "highmid" :label "€10m - €100m" :filter {:range {"!latest_turnover" {:gte 10000000 :lt 100000000}}}}
-                                           ;;            {:value "high" :label "> €100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
+                                           ;;            {:value "min" :label "< £500k" :filter {:range {"!latest_turnover" {:lt 500000}}}}
+                                           ;;            {:value "low" :label "£500k - £5m" :filter {:range {"!latest_turnover" {:gte 500000 :lt 5000000}}}}
+                                           ;;            {:value "lowmid" :label "£5m - £10m" :filter {:range {"!latest_turnover" {:gte 5000000 :lt 10000000}}}}
+                                           ;;            {:value "highmid" :label "£10m - £100m" :filter {:range {"!latest_turnover" {:gte 10000000 :lt 100000000}}}}
+                                           ;;            {:value "high" :label "> £100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
                                            ;;            ]}
 
                                            ;; {:id :sector
@@ -255,7 +255,7 @@
                                                                [:div
                                                                 (time/format-date (:raised_date fr))
                                                                 " : "
-                                                                (money/readable (:raised_amount_usd fr) :sf 2 :curr "€")]
+                                                                (money/readable (:raised_amount_usd fr) :sf 2 :curr "£")]
                                                                [:div (str/join ", " (for [inv (:investments fr)] (:investor_name inv)))]]))
                                        }
                                       {:key :directorships
@@ -339,7 +339,7 @@
                                                            {:key :!latest_turnover
                                                             :metric :sum
                                                             :label "Total turnover"
-                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr "€"))}
+                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr "£"))}
                                                            {:key :!latest_employee_count
                                                             :metric :sum
                                                             :label "Total employees"
@@ -347,7 +347,7 @@
                                                            ;; {:key :!total_funding
                                                            ;;  :metric :sum
                                                            ;;  :label "Total funding"
-                                                           ;;  :render-fn (fn [v] (money/readable v :sf 2 :curr "€"))}
+                                                           ;;  :render-fn (fn [v] (money/readable v :sf 2 :curr "£"))}
                                                            ]}}
                     :summary-stats nil
                     }
@@ -355,7 +355,7 @@
    :table  {:type :table
             :controls {:index "companies"
                        :index-type "company"
-                       :sort-spec {:!total_funding {:order "desc"}}
+                       :sort-spec {:!latest_turnover {:order "desc"}}
                        :from 0
                        :size 50
                        :columns [
@@ -398,7 +398,7 @@
    :company-turnover-timeline {:query {:index-name "company-funding-rounds"
                                        :index-type "funding-round"
                                        :time-variable "?raised_date"
-                                       :metrics {:variable :!raised_amount_usd :title "Raised (€)"}
+                                       :metrics {:variable :!raised_amount_usd :title "Raised (£)"}
                                        :interval "year"
                                        :before (time/today-str)}
                                :timeline-data nil}
@@ -456,19 +456,19 @@
                                                 {:row {:range {:field "accounts_date"
                                                                :ranges [{:key "2014" :from "2014-01-01" :to "2015-01-01"}]}}}} }
 
-                                    :cols [{:key "low"  :label "< €500k"}
-                                           {:key "500k" :label "> €500k"}
-                                           {:key "5m"   :label "> €5m"}
-                                           {:key "10m"  :label "> €10m"}
-                                           {:key "100m" :label "> €100m"}]
+                                    :cols [{:key "low"  :label "< £500k"}
+                                           {:key "500k" :label "> £500k"}
+                                           {:key "5m"   :label "> £5m"}
+                                           {:key "10m"  :label "> £10m"}
+                                           {:key "100m" :label "> £100m"}]
                                     :col-path [:col]
                                     :col-aggs {:col
                                                {:range {:field "turnover"
-                                                        :ranges [{:key "low"  :from 0         :to 500000     :label "< €500k"}
-                                                                 {:key "500k" :from 500000    :to 5000000    :label "> €500k"}
-                                                                 {:key "5m"   :from 5000000   :to 10000000   :label "> €5m"}
-                                                                 {:key "10m"  :from 10000000  :to 100000000  :label "> €10m"}
-                                                                 {:key "100m" :from 100000000 :to 1000000000 :label "> €100m"}] }}}
+                                                        :ranges [{:key "low"  :from 0         :to 500000     :label "< £500k"}
+                                                                 {:key "500k" :from 500000    :to 5000000    :label "> £500k"}
+                                                                 {:key "5m"   :from 5000000   :to 10000000   :label "> £5m"}
+                                                                 {:key "10m"  :from 10000000  :to 100000000  :label "> £10m"}
+                                                                 {:key "100m" :from 100000000 :to 1000000000 :label "> £100m"}] }}}
 
                                     :metric-path [:companies :metric]
                                     :metric-aggs {:companies
@@ -530,7 +530,7 @@
     :paths {:nav-button [:company-close]}}
 
    ;; {:name :city-barchart-var-select
-   ;;  :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!total_funding" "Total investment (€)"] ["!latest_employee_count" "Employee count"] ["!latest_turnover" "Turnover (€)"]])
+   ;;  :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!total_funding" "Total investment (£)"] ["!latest_employee_count" "Employee count"] ["!latest_turnover" "Turnover (£)"]])
    ;;  :target "city-barchart-var-select-component"
    ;;  :path [:city-barchart :query]}
 
@@ -559,7 +559,7 @@
    ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
 
    ;; {:name :invesetment-timeline-var-select
-   ;;  :f (partial select-chooser/select-chooser-component "Variable" :metric [[:sum "Total investment (€)"][:count "Number of deals"]])
+   ;;  :f (partial select-chooser/select-chooser-component "Variable" :metric [[:sum "Total investment (£)"][:count "Number of deals"]])
    ;;  :target "investment-timeline-var-select-component"
    ;;  :path [:investment-timeline :query :metrics]}
 
@@ -582,7 +582,7 @@
    ;;          :geo-sponsors [:geo-sponsors]}}
 
    ;; {:name :revenue-bands-var-select
-   ;;  :f (partial select-chooser/select-chooser-component "Variable" :field [[:turnover "Turnover (€)"][:employee_count "Employment"]])
+   ;;  :f (partial select-chooser/select-chooser-component "Variable" :field [[:turnover "Turnover (£)"][:employee_count "Employment"]])
    ;;  :target "revenue-bands-var-select-component"
    ;;  :path [:revenue-bands-table :controls :col-aggs :col :range]}
 
