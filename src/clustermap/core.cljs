@@ -223,11 +223,8 @@
                            :composed {}}
 
    :company-search {:controls {:search-fn api/company-search
-                               :render-fn (fn [r] [[:div (:name r)]
-                                                   [:div (some->> (:tags r)
-                                                                  (some (fn [t] (when (= "startup_region" (:type t)) t)))
-                                                                  :description)]])
-                               :col-headers ["Name" "Hub"]
+                               :render-fn (fn [r] [[:div (:name r)]])
+                               :col-headers nil ;; ["Name"]
                                :click-fn (fn [r]
                                            (make-company-selection (:natural_id r))
                                            (app/navigate @app-instance "company"))
