@@ -3416,6 +3416,17 @@ h1.logo {
 .section-charts {
   background: #eeeeee;
 }
+.section-credits {
+  background: #eeeeee;
+}
+.section-credits img {
+  display: block;
+  margin-top: 20px;
+}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
 .bar-chart-container {
   overflow: hidden;
   height: 20px;
