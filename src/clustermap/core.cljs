@@ -519,10 +519,10 @@
     :paths {:map-state [:map]
             :filter [:dynamic-filter-spec :composed :all]}}
 
-   ;; {:name :color-scale
-   ;;  :f color-scale/color-scale-component
-   ;;  :target "color-scale-component"
-   ;;  :path [:map :controls :threshold-colors]}
+   {:name :color-scale
+    :f color-scale/color-scale-component
+    :target "color-scale-component"
+    :path [:map :controls :threshold-colors]}
 
    {:name :company-close
     :f nav-button/nav-button-component
