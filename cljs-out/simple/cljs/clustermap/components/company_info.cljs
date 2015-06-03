@@ -8,7 +8,8 @@
             [clustermap.api :as api]
             [clustermap.formats.number :as num]
             [clustermap.formats.money :as money]
-            [clustermap.formats.time :as time]))
+            [clustermap.formats.time :as time]
+            [clustermap.components.timeline-chart :as timeline-chart]))
 
 (defn render-metadata-row
   [record {:keys [key label render-fn] :or {render-fn identity} :as field}]
@@ -29,25 +30,29 @@
       [:div.stat-change (sign-icon v) [:span (money/readable v :sf 2 :curr "") "%"]])))
 
 (defn render*
-  [record {:keys [title-field fields] :as controls}]
+  [record
+   {:keys [title-field fields] :as controls}
+   filter-spec
+   turnover-timeline
+   employment-timeline]
   (.log js/console (clj->js ["RECORD" record]))
   (html
    [:div.panel-grid-container
     [:div.panel-grid
      [:div.panel-row
 
-      [:div.panel
-       [:div.panel-body
-        [:div.company-details
-         [:ul
+      ;; [:div.panel
+      ;;  [:div.panel-body
+      ;;   [:div.company-details
+      ;;    [:ul
 
-          [:li
-           [:h4 "Description"]
-           [:p (:description record)]]
-          [:li
-           [:h4 "Website"
-            [:p
-             [:a {:href (:web_url record) :target "_blank"} (:web_url record)]]]]]]]]
+      ;;     [:li
+      ;;      [:h4 "Description"]
+      ;;      [:p (:description record)]]
+      ;;     [:li
+      ;;      [:h4 "Website"
+      ;;       [:p
+      ;;        [:a {:href (:web_url record) :target "_blank"} (:web_url record)]]]]]]]]
 
       [:div.panel
        [:div.panel-body
@@ -57,7 +62,7 @@
            (into
             [:address
              [:h4 "Address"]]
-            (for [line (str/split (:address record) #",|\n")]
+            (for [line (str/split (:postcode record) #",|\n")]
               [:div line]))]]]]]
       ]
 
@@ -78,6 +83,16 @@
          (stat-change (:latest_employee_count record) (:latest_employee_count_delta record))]]]
       ]
 
+     [:div.panel-row
+      [:div.panel
+       [:div.panel-body
+        (om/build timeline-chart/timeline-chart {:timeline-chart turnover-timeline
+                                                 :filter-spec filter-spec})]]
+      [:div.panel
+       [:div.panel-body
+        (om/build timeline-chart/timeline-chart {:timeline-chart employment-timeline
+                                                 :filter-spec filter-spec})]]]
+
 
      ]]
    ;; [:div.box.box-first
@@ -95,7 +110,9 @@
       sort-spec :sort-spec
       size :size
       :as controls} :controls
-      :as metadata} :metadata
+     :as metadata} :metadata
+     turnover-timeline :turnover-timeline
+     employment-timeline :employment-timeline
       filter-spec :filter-spec
       :as props}
    owner]
@@ -111,7 +128,7 @@
 
     om/IRender
     (render [_]
-      (render* record controls))
+      (render* record controls filter-spec turnover-timeline employment-timeline))
 
     om/IWillUpdate
     (will-update [_
