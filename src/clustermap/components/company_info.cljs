@@ -67,7 +67,7 @@
        [:div.panel-body
         [:div.chart-heading
          [:h4.stat-title "Turnover"]
-         [:div.stat-amount [:small "€"] (money/readable (:latest_turnover record) :sf 2 :curr "")]
+         [:div.stat-amount [:small "£"] (money/readable (:latest_turnover record) :sf 2 :curr "")]
          (stat-change (:latest_turnover record) (:latest_turnover_delta record))]]]
 
       [:div.panel
@@ -77,39 +77,6 @@
          [:div.stat-amount (num/readable (:latest_employee_count record) :sf 3)]
          (stat-change (:latest_employee_count record) (:latest_employee_count_delta record))]]]
       ]
-
-     [:div.panel-row
-
-      [:div.panel
-       [:div.panel-body
-        [:h4.stat-title "Funding rounds"]
-        [:div.table-responsive
-         [:table.table
-          [:thead
-           [:tr
-            [:th "Date"]
-            [:th "Amount raised (€)"]
-            [:th "Participants"]]]
-          (into [:tbody]
-                (for [fr (:funding_rounds record)]
-                  [:tr
-                   [:td (time/format-date (:raised_date fr))]
-                   [:td (money/readable (:raised_amount fr) :sf 2 :curr "")]
-                   [:td [:table
-                         (into [:tbody]
-                               (for [p (:investments fr)]
-                                 [:tr [:td (:investor_name p)]]))]]]))]]]]
-
-      [:div.panel
-       [:div.panel-body
-        [:h4.stat-title "Data sources"]
-        [:div.table-responsive
-         [:table.table
-          (into [:tbody]
-                (for [source (filter #(= "datasource" (:type %)) (:tags record))]
-                  [:tr [:td (:description source)]]))]]]]
-      ]
-
 
 
      ]]
