@@ -41,18 +41,23 @@
     [:div.panel-grid
      [:div.panel-row
 
-      ;; [:div.panel
-      ;;  [:div.panel-body
-      ;;   [:div.company-details
-      ;;    [:ul
+      [:div.panel
+       [:div.panel-body
+        [:div.company-details
+         [:ul
 
-      ;;     [:li
-      ;;      [:h4 "Description"]
-      ;;      [:p (:description record)]]
-      ;;     [:li
-      ;;      [:h4 "Website"
-      ;;       [:p
-      ;;        [:a {:href (:web_url record) :target "_blank"} (:web_url record)]]]]]]]]
+          [:li
+           [:h4 "Registration Number"]
+           [:p (:natural_id record)]]
+          [:li
+           [:h4 "Sector"]
+           [:p
+            (some->> record :tags (filter #(= "broad_12_sectors" (:type %))) first :description)]]
+          (when (:web_url record)
+            [:li
+             [:h4 "Website"
+              [:p
+               [:a {:href (:web_url record) :target "_blank"} (:web_url record)]]]])]]]]
 
       [:div.panel
        [:div.panel-body
@@ -73,25 +78,43 @@
         [:div.chart-heading
          [:h4.stat-title "Turnover"]
          [:div.stat-amount [:small "£"] (money/readable (:latest_turnover record) :sf 2 :curr "")]
-         (stat-change (:latest_turnover record) (:latest_turnover_delta record))]]]
+         (stat-change (:latest_turnover record) (:latest_turnover_delta record))]
+        [:div.chart-container-lg
+         (om/build timeline-chart/timeline-chart {:timeline-chart turnover-timeline
+                                                  :filter-spec filter-spec})]]]
 
       [:div.panel
        [:div.panel-body
         [:div.chart-heading
          [:h4.stat-title "Employment"]
          [:div.stat-amount (num/readable (:latest_employee_count record) :sf 3)]
-         (stat-change (:latest_employee_count record) (:latest_employee_count_delta record))]]]
+         (stat-change (:latest_employee_count record) (:latest_employee_count_delta record))]
+        [:div.chart-container-lg
+         (om/build timeline-chart/timeline-chart {:timeline-chart employment-timeline
+                                                  :filter-spec filter-spec})]]]
       ]
 
      [:div.panel-row
       [:div.panel
        [:div.panel-body
-        (om/build timeline-chart/timeline-chart {:timeline-chart turnover-timeline
-                                                 :filter-spec filter-spec})]]
-      [:div.panel
-       [:div.panel-body
-        (om/build timeline-chart/timeline-chart {:timeline-chart employment-timeline
-                                                 :filter-spec filter-spec})]]]
+        [:h3 "Directors"]
+        [:table.responsive
+         [:table.table
+          [:thead
+           [:tr [:th "Name"] [:th "Appointment date"] [:th "Resignation date"]]]
+          (into [:tbody]
+                (let [ds (:directorships record)
+                      cds (filter (complement :resignation_date) ds)
+                      scds (reverse (sort-by :appointment_date cds))
+                      rds (filter :resignation_date ds)
+                      srds (reverse (sort-by :resignation_date rds))
+                      sds (concat scds srds)]
+                  (for [d sds]
+                    [:tr
+                     [:td (:name d)]
+                     [:td (time/format-date (:appointment_date d))]
+                     [:td (time/format-date (:resignation_date d))]
+                     ])))]]]]]
 
 
      ]]
