@@ -44,6 +44,35 @@
       deref
       clustermap.app/get-state))
 
+(def max-lag-months 22)
+
+;; tests that latest and previous accounts are not too old
+(def current-filter {:nested {:path "?accounts"
+                              :filter {:bool {:must [{:term {"rank" 1}}
+                                                     {:range {"accounts_date" {:gte (time/format-date (time/months-ago max-lag-months))}}}]}}}})
+
+;; scaleup query : is this a scaleup considering accounts of rank n
+;; (1 = latest, 2 = previous, 3 = 2 years prior etc)
+(defn scaleup-rank-filter
+  [n]
+  {:bool {:must [{:nested {:path "?accounts"
+                           :filter {:bool {:must [{:term {"rank" n}}
+                                                  {:range {"accounts_date" {:gte (time/format-date (time/months-ago (+ max-lag-months (* 12 (dec n)))))}}}
+                                                  {:range {"turnover_delta_norm" {:gte 0.2}}}]}}}}
+                 {:nested {:path "?accounts"
+                           :filter {:bool {:must [{:term {"rank" (inc n)}}
+                                                  {:range {"accounts_date" {:gte (time/format-date (time/months-ago (+ max-lag-months (* 12 n))))}}}
+                                                  {:range {"turnover_delta_norm" {:gte 0.2}}}
+                                                  {:range {"employee_count" {:gte 10}}}
+                                                  {:range {"turnover" {:gte 1000000}}}]}}}}]}})
+;; is this currently a scale-up
+(def scaleup-filter
+  (scaleup-rank-filter 1))
+
+;; was this a scaleup a year previously
+(def previous-scaleup-filter
+  (scaleup-rank-filter 2))
+
 (defn boundaryline-filter
   [boundaryline-id]
   (when boundaryline-id
@@ -190,7 +219,8 @@
                                            {:id :sector
                                             :type :tag-checkboxes
                                             :label "Sector"
-                                            :sorted true
+                                            :sorted false
+                                            :visible true
                                             :tag-type "broad_12_sectors"
                                             :tags [
                                                    {:value "construction_and_utilities" :label "Construction and utilities"}
@@ -199,14 +229,21 @@
                                                    {:value "knowledge_intensive_professional_services" :label "Knowledge Intensive Professional Services"}
                                                    {:value "life_science_and_healthcare" :label "Life Science and Healthcare"}
                                                    {:value "manufacturing" :label "Manufacturing"}
-                                                   {:value "not_known" :label "NOT KNOWN"}
                                                    {:value "other_business_services" :label "Other Business Services"}
                                                    {:value "personal_services" :label "Personal services"}
                                                    {:value "primary" :label "Primary"}
                                                    {:value "property_and_finance" :label "Property and finance"}
                                                    {:value "transport_and_travel" :label "Transport and travel"}
                                                    {:value "wholesale_and_retail_distribution" :label "Wholesale and retail distribution"}
+                                                   {:value "not_known" :label "Unknown"}
                                                    ]}
+
+                                           {:id :highgrowth
+                                            :type :checkboxes
+                                            :label "High growth"
+                                            :visible true
+                                            :options [{:value "latest" :label "High growth companies" :filter scaleup-filter}
+                                                      ]}
 
                                            ;; {:id :ds
                                            ;;  :type :tag
@@ -223,7 +260,7 @@
                          ;; base-filters AND combined with dynamic components
                          :composed {}}
 
-   :dynamic-filter-description-components [:boundaryline :age :total-funding :sector :ds :hub :latest-turnover]
+   :dynamic-filter-description-components [:boundaryline :age :total-funding :sector :ds :hub :latest-turnover :highgrowth]
 
    :selection-filter-spec {:id :selection-filter
                            :components {:natural_id nil}
