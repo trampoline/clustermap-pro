@@ -187,18 +187,26 @@
                                            ;;            {:value "high" :label "> £100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
                                            ;;            ]}
 
-                                           ;; {:id :sector
-                                           ;;  :type :tag
-                                           ;;  :label "Sector"
-                                           ;;  :sorted true
-                                           ;;  :tag-type "ons_sector"
-                                           ;;  :tags [{:value "" :label "Any" :omit-description true}
-                                           ;;         {:value "digi_tech" :label "Digital Technologies"}
-                                           ;;         {:value "lifesci_health" :label "Life Sciences & Healthcare"}
-                                           ;;         {:value "pub_broad" :label "Publishing & Broadcasting"}
-                                           ;;         {:value "other_scitechmanf" :label "Other scientific/technological manufacture"}
-                                           ;;         {:value "other_scitech_serv" :label "Other scientific/technological services"}]
-                                           ;;  }
+                                           {:id :sector
+                                            :type :tag-checkboxes
+                                            :label "Sector"
+                                            :sorted true
+                                            :tag-type "broad_12_sectors"
+                                            :tags [
+                                                   {:value "construction_and_utilities" :label "Construction and utilities"}
+                                                   {:value "education_arts_charities_social_care" :label "Education, arts, charities, social care"}
+                                                   {:value "information_technology_and_telecoms" :label "Information Technology and Telecoms"}
+                                                   {:value "knowledge_intensive_professional_services" :label "Knowledge Intensive Professional Services"}
+                                                   {:value "life_science_and_healthcare" :label "Life Science and Healthcare"}
+                                                   {:value "manufacturing" :label "Manufacturing"}
+                                                   {:value "not_known" :label "NOT KNOWN"}
+                                                   {:value "other_business_services" :label "Other Business Services"}
+                                                   {:value "personal_services" :label "Personal services"}
+                                                   {:value "primary" :label "Primary"}
+                                                   {:value "property_and_finance" :label "Property and finance"}
+                                                   {:value "transport_and_travel" :label "Transport and travel"}
+                                                   {:value "wholesale_and_retail_distribution" :label "Wholesale and retail distribution"}
+                                                   ]}
 
                                            ;; {:id :ds
                                            ;;  :type :tag
