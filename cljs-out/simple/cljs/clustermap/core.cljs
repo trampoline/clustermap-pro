@@ -121,6 +121,14 @@
                   (app/navigate @app-instance "company"))}
    name])
 
+(defn sign-icon
+  [n]
+  (cond
+    (> n 0) [:i.icon-positive]
+    (< n 0)  [:i.icon-negative]
+    :else nil))
+
+
 (def initial-state
   {:boundarylines {
                    :collections {
@@ -385,14 +393,28 @@
                                                             :metric :sum
                                                             :label "Total turnover"
                                                             :render-fn (fn [v] (money/readable v :sf 2 :curr "£"))}
+                                                           {:key :!latest_turnover_delta
+                                                            :belongs-to :!latest_turnover
+                                                            :metric :sum
+                                                            :label "Turnover change"
+                                                            :value-fn (fn [btv v] (* 100 (/ v btv)))
+                                                            :render-fn (fn [v] [:div.stat-change
+                                                                                (sign-icon v)
+                                                                                (money/readable v :sf 2 :curr "")
+                                                                                "%"])}
                                                            {:key :!latest_employee_count
                                                             :metric :sum
                                                             :label "Total employees"
                                                             :render-fn (fn [v] (money/readable v :sf 2 :curr ""))}
-                                                           ;; {:key :!total_funding
-                                                           ;;  :metric :sum
-                                                           ;;  :label "Total funding"
-                                                           ;;  :render-fn (fn [v] (money/readable v :sf 2 :curr "£"))}
+                                                           {:key :!latest_employee_count_delta
+                                                            :belongs-to :!latest_employee_count
+                                                            :metric :sum
+                                                            :label "Employment change"
+                                                            :value-fn (fn [btv v] (* 100 (/ v btv)))
+                                                            :render-fn (fn [v] [:div.stat-change
+                                                                                (sign-icon v)
+                                                                                (money/readable v :sf 2 :curr "")
+                                                                                "%"])}
                                                            ]}}
                     :summary-stats nil
                     }
