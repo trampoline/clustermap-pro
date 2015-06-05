@@ -451,31 +451,13 @@
                                  ]}
             :table-data nil}
 
-   :investment-timeline {:query {:index-name "company-funding-rounds"
-                                 :index-type "funding-round"
-                                 :time-variable "?raised_date"
-                                 :metrics {:variable :!raised_amount_usd :title "-" :metric :sum}
-                                 :interval "year"
-                                 :before "2015-01-01"}
-                         :timeline-data nil}
-
-   :employment-timeline {:query {:index-name "company-accounts"
-                                 :index-type "accounts"
-                                 :time-variable "?accounts_date"
-                                 :metrics {:variable :!employee_count :title "Employees"}
-                                 :interval "year"
-                                 :before (time/today-str)
-                                 }
-                         :timeline-data nil}
-
-   :formation-timeline {:query {:index-name "companies"
-                                :index-type "company"
-                                :time-variable "!formation_date"
-                                :metrics {:variable :?counter :metric :count :title "Formations"}
-                                :interval "year"
-                                ;; :before (time/today-str)
-                                }
-                        :timeline-data nil}
+   :trends-timeline {:query {:index-name "company-accounts"
+                             :index-type "accounts"
+                             :time-variable "?accounts_date"
+                             :metrics {:variable :!turnover :title "-" :metric :sum}
+                             :interval "year"
+                             :before "2014-01-01"}
+                     :timeline-data nil}
 
    :company-turnover-timeline {:query {:index-name "company-accounts"
                                        :index-type "accounts"
@@ -634,16 +616,16 @@
     :paths {:table-state [:table]
             :filter-spec [:dynamic-filter-spec :composed :all]}}
 
-   ;; {:name :investment-timeline
-   ;;  :f timeline-chart/timeline-chart
-   ;;  :target "investment-timeline-component"
-   ;;  :paths {:timeline-chart [:investment-timeline]
-   ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
+   {:name :trends-timeline
+    :f timeline-chart/timeline-chart
+    :target "trends-timeline-component"
+    :paths {:timeline-chart [:trends-timeline]
+            :filter-spec [:dynamic-filter-spec :composed :all]}}
 
-   ;; {:name :invesetment-timeline-var-select
-   ;;  :f (partial select-chooser/select-chooser-component "Variable" :metric [[:sum "Total investment (£)"][:count "Number of deals"]])
-   ;;  :target "investment-timeline-var-select-component"
-   ;;  :path [:investment-timeline :query :metrics]}
+   {:name :trends-timeline-var-select
+    :f (partial select-chooser/select-chooser-component "Variable" :variable [[:!turnover "Turnover (£)"][:!employee_count "Employees"]])
+    :target "trends-timeline-var-select-component"
+    :path [:trends-timeline :query :metrics]}
 
    ;; {:name :employment-timeline
    ;;  :f timeline-chart/timeline-chart
