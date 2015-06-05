@@ -1,10 +1,12 @@
 (ns clustermap.components.company-info
-  (:require [clojure.string :as str]
+  (:require-macros
+   [cljs.core.async.macros :refer [go]])
+  (:require [cljs.core.async :refer [<!]]
+            [clojure.string :as str]
             [om.core :as om :include-macros true]
             [om-tools.core :refer-macros [defcomponentk]]
             [schema.core :as s :refer-macros [defschema]]
             [sablono.core :as html :refer-macros [html]]
-            [clustermap.ordered-resource :as ordered-resource]
             [clustermap.api :as api]
             [clustermap.formats.number :as num]
             [clustermap.formats.money :as money]
@@ -143,11 +145,7 @@
   (reify
     om/IDidMount
     (did-mount [_]
-      (let [mdr (ordered-resource/make-discard-stale-resource "metadata-resource")]
-        (om/set-state! owner :metadata-resource mdr)
-        (ordered-resource/retrieve-responses mdr (fn [data]
-                                                   (.log js/console (clj->js ["COMPANY-INFO-DATA" data]))
-                                                   (om/update! metadata [:record] (some-> data :records first))))))
+      (om/set-state! owner :fetch-metadata-fn (api/records-factory)))
 
     om/IRender
     (render [_]
@@ -163,16 +161,17 @@
                      :as next-controls} :controls
                     :as next-metadata} :metadata
                     next-filter-spec :filter-spec}
-                  {metadata-resource :metadata-resource}]
+                  {fetch-metadata-fn :fetch-metadata-fn}]
 
       (when (or (not next-record)
                 (not= next-controls controls)
                 (not= next-filter-spec filter-spec))
 
-        (ordered-resource/api-call metadata-resource
-                                   api/records
-                                   next-index
-                                   next-index-type
-                                   next-filter-spec
-                                   next-sort-spec
-                                   next-size)))))
+        (go
+          (when-let [metadata-data (<! (fetch-metadata-fn next-index
+                                                          next-index-type
+                                                          next-filter-spec
+                                                          next-sort-spec
+                                                          next-size))]
+            (.log js/console (clj->js ["COMPANY-INFO-DATA" metadata-data]))
+            (om/update! metadata [:record] (some-> metadata-data :records first))))))))

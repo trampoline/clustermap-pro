@@ -10,14 +10,14 @@ cljs.core.async.impl.dispatch.queued_QMARK_ = false;
 cljs.core.async.impl.dispatch.TASK_BATCH_SIZE = (1024);
 cljs.core.async.impl.dispatch.process_messages = (function process_messages(){cljs.core.async.impl.dispatch.running_QMARK_ = true;
 cljs.core.async.impl.dispatch.queued_QMARK_ = false;
-var count_28019 = (0);while(true){
-var m_28020 = cljs.core.async.impl.dispatch.tasks.pop();if((m_28020 == null))
+var count_26070 = (0);while(true){
+var m_26071 = cljs.core.async.impl.dispatch.tasks.pop();if((m_26071 == null))
 {} else
-{m_28020.call(null);
-if((count_28019 < cljs.core.async.impl.dispatch.TASK_BATCH_SIZE))
+{m_26071.call(null);
+if((count_26070 < cljs.core.async.impl.dispatch.TASK_BATCH_SIZE))
 {{
-var G__28021 = (count_28019 + (1));
-count_28019 = G__28021;
+var G__26072 = (count_26070 + (1));
+count_26070 = G__26072;
 continue;
 }
 } else

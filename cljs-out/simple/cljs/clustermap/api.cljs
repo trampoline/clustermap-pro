@@ -36,41 +36,6 @@
 (defn PUT [url content & {:as opts}]
   (apply AJAX url (apply concat (merge opts {:method "PUT" :content content}))))
 
-(defn- ordered-api-results
-  "- ocomm : a channel containing [result-chans result-handler-args]
-             gather results from the one-or-more result-chans, and
-             pass them to the handler along with any result-handler-args
-   - handler : invoked with (apply handler result-or-results result-handler-args)"
-  [ocomm handler]
-  (go
-   (while true
-     (let [[rcomms result-handler-args] (<! ocomm)
-           result (if (sequential? rcomms)
-                    (loop [rem rcomms
-                           results []]
-                      (if (empty? rem)
-                        results
-                        (recur (rest rem) (conj results (when (first rem) (<! (first rem)))))))
-                    (when rcomms (<! rcomms)))]
-       ;; (.log js/console (clj->js result))
-       (apply handler result result-handler-args)))))
-
-(defn ordered-api
-  "order responses from an async API according to the order of requests
-   - request-handler: fn to send an async API request, returning a channel of a single result value,
-                      and optional additional args for the result-handler. return nil to
-                      abandon request
-   - result-handler: function of API result and optional additional args from request-handler result"
-  [request-handler result-handler]
-
-  (let [ocomm (chan (sliding-buffer 1))
-        _ (ordered-api-results ocomm result-handler)]
-    (fn [& req-args]
-      (if-let [r (apply request-handler req-args)]
-        (let [rseq (if (sequential? r) r [r])
-              [rcomm & result-handler-args] rseq]
-          (put! ocomm [rcomm result-handler-args]))))))
-
 (defn lastcall-method-impl
   "implements last-call-wins aync api-call semantics, discarding results from
    any earlier api calls
@@ -140,7 +105,7 @@
 
 ;; aggregation over boundarylines
 
-(defn boundaryline-aggregation
+(def-lastcall-method-factory boundaryline-aggregation-factory
   [index type blcoll attr filter bounds scale-attr post-scale-factor & [type-ids]]
   (POST (str "/api/" api-prefix "/boundaryline-agg/" index "/" type "/" blcoll "/" attr "?" (map-json-params type-ids))
       {:filter filter
@@ -162,7 +127,7 @@
        :bounds bounds}))
 
 ;; points in view
-(defn location-lists
+(def-lastcall-method-factory location-lists-factory
   [index type location-attr attrs max-count filter bounds & [type-ids]]
   (POST (str "/api/" api-prefix "/location-lists/" index "/" type "/" location-attr "?" (map-json-params type-ids))
       {:max-count max-count
@@ -171,7 +136,7 @@
        :bounds bounds}))
 
 ;; tabular data
-(defn simple-table
+(def-lastcall-method-factory simple-table-factory
   [index type filter-spec bounds sort-spec from size & [type-ids]]
   (POST (str "/api/" api-prefix "/simple-table/" index "/" type "?" (map-json-params type-ids))
       {:filter filter-spec
@@ -186,11 +151,11 @@
       {:query query
        :filter-spec filter-spec}))
 
-(defn geo-sponsors
+(def-lastcall-method-factory geo-sponsors-factory
   [bounds]
   (GET (str "/api/" api-prefix "/geo-sponsors?" (map-json-params {:bounds bounds}))))
 
-(defn rankings
+(def-lastcall-method-factory rankings-factory
   [index index-type filter-spec sort-spec periods metric-variables merge-key fields size]
   (POST (str "/api/" api-prefix "/rankings")
       {:index-name index
@@ -216,14 +181,14 @@
        :metric-path metric-path
        :metric-aggs metric-aggs}))
 
-(defn count-matching
+(def-lastcall-method-factory count-matching-factory
   [index index-type filter-spec]
   (POST (str "/api/" api-prefix "/count-matching")
       {:index-name index
        :index-type index-type
        :filter filter-spec}))
 
-(defn records
+(def-lastcall-method-factory records-factory
   [index index-type filter-spec sort-spec size]
   (POST (str "/api/" api-prefix "/records")
       {:index-name index
@@ -236,7 +201,7 @@
   [tag-type]
   (GET (str "/api/" api-prefix "/tags/" tag-type)))
 
-(defn geotags-of-type
+(def-lastcall-method-factory geotags-of-type-factory
   [tag-type]
   (GET (str "/api/" api-prefix "/geotags/" tag-type)))
 

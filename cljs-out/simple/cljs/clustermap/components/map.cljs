@@ -11,7 +11,6 @@
    [sablono.core :as html :refer-macros [html]]
    [hiccups.runtime :as hiccupsrt]
    [clustermap.api :as api]
-   [clustermap.ordered-resource :as ordered-resource]
    [clustermap.boundarylines :as bl]
    [clustermap.data.colorchooser :as colorchooser]))
 
@@ -443,37 +442,6 @@
        first
        last))
 
-(defn request-aggregation-data
-  [resource index index-type blcoll variable filter bounds scale-attr post-scale-factor]
-  (ordered-resource/api-call resource
-                             api/boundaryline-aggregation
-                             index
-                             index-type
-                             blcoll
-                             variable
-                             filter
-                             bounds
-                             scale-attr
-                             post-scale-factor))
-
-(defn request-point-data
-  [resource index index-type filter bounds]
-  (ordered-resource/api-call resource
-                             api/location-lists
-                             index
-                             index-type
-                             "!postcode"
-                             ["?natural_id" "!name" "!location" "!latest_employee_count" "!latest_turnover"]
-                             1000
-                             filter
-                             bounds))
-
-(defn request-geotag-data
-  [resource tag-type]
-  (ordered-resource/api-call resource
-                             api/geotags-of-type
-                             tag-type))
-
 (defn map-component
   "put the leaflet map as state in the om component"
   [{{data :data
@@ -577,19 +545,9 @@
                                      (when handler
                                        (handler e))))))
 
-        (let [adr (ordered-resource/make-discard-stale-resource "aggregation-data-resource")]
-          (om/set-state! owner :aggregation-data-resource adr)
-          (ordered-resource/retrieve-responses adr (fn [data] (om/update! cursor [:data] data))))
-
-        (let [pdr (ordered-resource/make-discard-stale-resource "point-data-resource")]
-          (om/set-state! owner :point-data-resource pdr)
-          (ordered-resource/retrieve-responses pdr (fn [point-data] (om/update! cursor [:point-data] point-data))))
-
-        (let [gtdr (ordered-resource/make-discard-stale-resource "geotag-data-resource")]
-          (om/set-state! owner :geotag-data-resource gtdr)
-          (ordered-resource/retrieve-responses gtdr (fn [geotag-data] (om/update! cursor [:controls :geotag-aggs :geotag-data] geotag-data)))
-          )
-
+        (om/set-state! owner :fetch-aggregation-data-fn (api/boundaryline-aggregation-factory))
+        (om/set-state! owner :fetch-point-data-fn (api/location-lists-factory))
+        (om/set-state! owner :fetch-geotag-data-fn (api/geotags-of-type-factory))
         (om/set-state! owner :fetch-geotag-agg-data-fn (api/nested-aggregation-factory))
 
         ))
@@ -621,9 +579,9 @@
                     next-paths :paths
                     next-path-selections :path-selections} :map
                     next-path-highlights :path-highlights
-                    next-aggregation-data-resource :aggregation-data-resource
-                    next-point-data-resource :point-data-resource
-                    next-geotag-data-resource :geotag-data-resource
+                    fetch-aggregation-data-fn :fetch-aggregation-data-fn
+                    fetch-point-data-fn :fetch-point-data-fn
+                    fetch-geotag-data-fn :fetch-geotag-data-fn
                     fetch-geotag-agg-data-fn :fetch-geotag-agg-data-fn
                     }]
 
@@ -655,26 +613,32 @@
                        (not= next-filter filter)
                        (not= next-bounds bounds)))
           ;; time for some new data !
-          (request-aggregation-data next-aggregation-data-resource
-                                    (:index next-boundaryline-agg)
-                                    (:index-type next-boundaryline-agg)
-                                    (choose-boundaryline-collection next-boundaryline-collections (.getZoom leaflet-map))
-                                    (:variable next-boundaryline-agg)
-                                    (om/-value next-filter)
-                                    (bounds-array (.getBounds leaflet-map))
-                                    (:scale-attr next-boundaryline-agg)
-                                    (:post-scale-factor next-boundaryline-agg))
+          (go
+            (when-let [aggregation-data (<! (fetch-aggregation-data-fn (:index next-boundaryline-agg)
+                                                                       (:index-type next-boundaryline-agg)
+                                                                       (choose-boundaryline-collection next-boundaryline-collections (.getZoom leaflet-map))
+                                                                       (:variable next-boundaryline-agg)
+                                                                       (om/-value next-filter)
+                                                                       (bounds-array (.getBounds leaflet-map))
+                                                                       (:scale-attr next-boundaryline-agg)
+                                                                       (:post-scale-factor next-boundaryline-agg)))]
+              (om/update! cursor [:data] aggregation-data)))
 
-          (request-point-data next-point-data-resource
-                              (:index next-boundaryline-agg)
-                              (:index-type next-boundaryline-agg)
-                              (om/-value next-filter)
-                              (bounds-array (.getBounds leaflet-map))))
+          (go
+            (when-let [point-data (<! (fetch-point-data-fn (:index next-boundaryline-agg)
+                                                           (:index-type next-boundaryline-agg)
+                                                           "!postcode"
+                                                           ["?natural_id" "!name" "!location" "!latest_employee_count" "!latest_turnover"]
+                                                           1000
+                                                           (om/-value next-filter)
+                                                           (bounds-array (.getBounds leaflet-map))))]
+              (om/update! cursor [:point-data] point-data))))
 
         (when (and next-geotag-aggs
                    (or (not (:geotag-data next-geotag-aggs))))
-          (request-geotag-data next-geotag-data-resource
-                                (:tag-type next-geotag-aggs)))
+          (go
+            (when-let [geotag-data (<! (fetch-geotag-data-fn (:tag-type next-geotag-aggs)))]
+              (om/update! cursor [:controls :geotag-aggs :geotag-data] geotag-data))))
 
         (when (and next-geotag-aggs
                    (or (not (:geotag-agg-data next-geotag-aggs))
@@ -742,11 +706,6 @@
         (events/unlisten! node)
         (events/unlisten! "clustermap-change-view")
 
-        (let [{{:keys [leaflet-map markers paths path-selections]} :map
-               :keys [aggregation-data-resource point-data-resource]} (om/get-state owner)]
-          (ordered-resource/close aggregation-data-resource)
-          (ordered-resource/close point-data-resource)
-
+        (let [{{:keys [leaflet-map markers paths path-selections]} :map} (om/get-state owner)]
           (.remove leaflet-map))))
-
     ))
