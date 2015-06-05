@@ -1,6 +1,6 @@
 (ns clustermap.api
   (:require-macros
-   [clustermap.api :refer [def-lastcall-method]]
+   [clustermap.api :refer [def-lastcall-method def-lastcall-method-factory]]
    [cljs.core.async.macros :refer [go]])
   (:require
    [clojure.string :as str]
@@ -148,13 +148,13 @@
        :scale-attr scale-attr
        :post-scale-factor post-scale-factor}))
 
-(defn nested-aggregation
+(def-lastcall-method-factory nested-aggregation-factory
   [{:keys [index-name index-type filter-spec sort-spec nested-path nested-filter nested-attr stats-attr] :as q}]
   (POST (str "/api/" api-prefix "/nested-agg")
       q))
 
 ;; summary stats
-(defn summary-stats
+(def-lastcall-method-factory summary-stats-factory
   [index type statsattrs filter bounds & [type-ids]]
   (POST (str "/api/" api-prefix "/summary-stats/" index "/" type "?" (map-json-params type-ids))
       {:statsattrs statsattrs
@@ -180,7 +180,7 @@
        :from from
        :size size}))
 
-(defn timeline
+(def-lastcall-method-factory timeline-factory
   [query filter-spec]
   (POST (str "/api/" api-prefix "/timeline")
       {:query query
@@ -203,7 +203,7 @@
        :fields fields
        :size size}))
 
-(defn ranges
+(def-lastcall-method-factory ranges-factory
   [index index-type filter-spec row-path row-aggs col-path col-aggs metric-path metric-aggs]
   (POST (str "/api/" api-prefix "/ranges")
       {:index-name index
@@ -232,7 +232,7 @@
        :sort sort-spec
        :size size}))
 
-(defn tags-of-type
+(def-lastcall-method-factory tags-of-type-factory
   [tag-type]
   (GET (str "/api/" api-prefix "/tags/" tag-type)))
 

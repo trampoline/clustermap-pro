@@ -499,12 +499,12 @@
                               :index-type "company"
                               :nested-path "?tags"
                               :nested-attr "tag"
-                              :nested-filter {:term {:type "ons_sector"}}
-                              :stats-attr "?counter"}
-                      :metrics [{:metric :nested_attr_doc_count
-                                 :title "Companies"
+                              :nested-filter {:term {:type "broad_12_sectors"}}
+                              :stats-attr "!latest_turnover"}
+                      :metrics [{:metric :sum
+                                 :title "-"
                                  :label-formatter (fn [] (this-as this (money/readable (.-value this) :sf 2 :curr "")))}]
-                      :tag-type "ons_sector"
+                      :tag-type "broad_12_sectors"
                       :tag-data nil
                       :tag-agg-data nil}
 
@@ -604,9 +604,14 @@
    ;;  :paths {:tag-histogram [:city-barchart]
    ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
 
+   {:name :sector-histogram-var-select
+    :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!latest_turnover" "Total turnover (£)"] ["!latest_employee_count" "Total employees"]])
+    :target "sector-histogram-var-select-component"
+    :path [:sector-histogram :query]}
+
    {:name :sector-histogram
     :f tag-histogram/tag-histogram
-    :target "sector-histogram"
+    :target "sector-histogram-component"
     :paths {:tag-histogram [:sector-histogram]
             :filter-spec [:dynamic-filter-spec :composed :all]}}
 
