@@ -24,9 +24,9 @@ hiccups.runtime.as_str = (function as_str(x){if(((x instanceof cljs.core.Keyword
 hiccups.runtime._STAR_html_mode_STAR_ = new cljs.core.Keyword(null,"xml","xml",-1170142052);
 hiccups.runtime.xml_mode_QMARK_ = (function xml_mode_QMARK_(){return cljs.core._EQ_.call(null,hiccups.runtime._STAR_html_mode_STAR_,new cljs.core.Keyword(null,"xml","xml",-1170142052));
 });
-hiccups.runtime.in_mode = (function in_mode(mode,f){var _STAR_html_mode_STAR_31293 = hiccups.runtime._STAR_html_mode_STAR_;try{hiccups.runtime._STAR_html_mode_STAR_ = mode;
+hiccups.runtime.in_mode = (function in_mode(mode,f){var _STAR_html_mode_STAR_31313 = hiccups.runtime._STAR_html_mode_STAR_;try{hiccups.runtime._STAR_html_mode_STAR_ = mode;
 return f.call(null);
-}finally {hiccups.runtime._STAR_html_mode_STAR_ = _STAR_html_mode_STAR_31293;
+}finally {hiccups.runtime._STAR_html_mode_STAR_ = _STAR_html_mode_STAR_31313;
 }});
 /**
 * Change special characters into HTML character entities.
@@ -42,7 +42,7 @@ hiccups.runtime.end_tag = (function end_tag(){if(hiccups.runtime.xml_mode_QMARK_
 });
 hiccups.runtime.xml_attribute = (function xml_attribute(name,value){return (" "+cljs.core.str.cljs$core$IFn$_invoke$arity$1(hiccups.runtime.as_str.call(null,name))+"=\""+cljs.core.str.cljs$core$IFn$_invoke$arity$1(hiccups.runtime.escape_html.call(null,value))+"\"");
 });
-hiccups.runtime.render_attribute = (function render_attribute(p__31294){var vec__31296 = p__31294;var name = cljs.core.nth.call(null,vec__31296,(0),null);var value = cljs.core.nth.call(null,vec__31296,(1),null);if(value === true)
+hiccups.runtime.render_attribute = (function render_attribute(p__31314){var vec__31316 = p__31314;var name = cljs.core.nth.call(null,vec__31316,(0),null);var value = cljs.core.nth.call(null,vec__31316,(1),null);if(value === true)
 {if(hiccups.runtime.xml_mode_QMARK_.call(null))
 {return hiccups.runtime.xml_attribute.call(null,name,name);
 } else
@@ -62,11 +62,11 @@ hiccups.runtime.render_attr_map = (function render_attr_map(attrs){return cljs.c
 /**
 * Ensure a tag vector is of the form [tag-name attrs content].
 */
-hiccups.runtime.normalize_element = (function normalize_element(p__31297){var vec__31300 = p__31297;var tag = cljs.core.nth.call(null,vec__31300,(0),null);var content = cljs.core.nthnext.call(null,vec__31300,(1));if(!(((tag instanceof cljs.core.Keyword)) || ((tag instanceof cljs.core.Symbol)) || (typeof tag === 'string')))
+hiccups.runtime.normalize_element = (function normalize_element(p__31317){var vec__31320 = p__31317;var tag = cljs.core.nth.call(null,vec__31320,(0),null);var content = cljs.core.nthnext.call(null,vec__31320,(1));if(!(((tag instanceof cljs.core.Keyword)) || ((tag instanceof cljs.core.Symbol)) || (typeof tag === 'string')))
 {throw (''+cljs.core.str.cljs$core$IFn$_invoke$arity$1(tag)+" is not a valid tag name");
 } else
 {}
-var vec__31301 = cljs.core.re_matches.call(null,hiccups.runtime.re_tag,hiccups.runtime.as_str.call(null,tag));var _ = cljs.core.nth.call(null,vec__31301,(0),null);var tag__$1 = cljs.core.nth.call(null,vec__31301,(1),null);var id = cljs.core.nth.call(null,vec__31301,(2),null);var class$ = cljs.core.nth.call(null,vec__31301,(3),null);var tag_attrs = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"id","id",-1388402092),id,new cljs.core.Keyword(null,"class","class",-2030961996),(cljs.core.truth_(class$)?clojure.string.replace.call(null,class$,"."," "):null)], null);var map_attrs = cljs.core.first.call(null,content);if(cljs.core.map_QMARK_.call(null,map_attrs))
+var vec__31321 = cljs.core.re_matches.call(null,hiccups.runtime.re_tag,hiccups.runtime.as_str.call(null,tag));var _ = cljs.core.nth.call(null,vec__31321,(0),null);var tag__$1 = cljs.core.nth.call(null,vec__31321,(1),null);var id = cljs.core.nth.call(null,vec__31321,(2),null);var class$ = cljs.core.nth.call(null,vec__31321,(3),null);var tag_attrs = new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"id","id",-1388402092),id,new cljs.core.Keyword(null,"class","class",-2030961996),(cljs.core.truth_(class$)?clojure.string.replace.call(null,class$,"."," "):null)], null);var map_attrs = cljs.core.first.call(null,content);if(cljs.core.map_QMARK_.call(null,map_attrs))
 {return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [tag__$1,cljs.core.merge.call(null,tag_attrs,map_attrs),cljs.core.next.call(null,content)], null);
 } else
 {return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [tag__$1,tag_attrs,content], null);
@@ -75,7 +75,7 @@ var vec__31301 = cljs.core.re_matches.call(null,hiccups.runtime.re_tag,hiccups.r
 /**
 * Render a tag vector as a HTML element.
 */
-hiccups.runtime.render_element = (function render_element(element){var vec__31303 = hiccups.runtime.normalize_element.call(null,element);var tag = cljs.core.nth.call(null,vec__31303,(0),null);var attrs = cljs.core.nth.call(null,vec__31303,(1),null);var content = cljs.core.nth.call(null,vec__31303,(2),null);if(cljs.core.truth_((function (){var or__3639__auto__ = content;if(cljs.core.truth_(or__3639__auto__))
+hiccups.runtime.render_element = (function render_element(element){var vec__31323 = hiccups.runtime.normalize_element.call(null,element);var tag = cljs.core.nth.call(null,vec__31323,(0),null);var attrs = cljs.core.nth.call(null,vec__31323,(1),null);var content = cljs.core.nth.call(null,vec__31323,(2),null);if(cljs.core.truth_((function (){var or__3639__auto__ = content;if(cljs.core.truth_(or__3639__auto__))
 {return or__3639__auto__;
 } else
 {return hiccups.runtime.container_tags.call(null,tag);

@@ -42,7 +42,7 @@ return (function (n){return (Math.pow.call(null,Math.E,n) - translation);
 ,log_linear_scale);
 });
 clustermap.data.colorchooser.choose_from_scheme = (function choose_from_scheme(scheme,thresholds,value){var scheme_thresholds = cljs.core.map.call(null,cljs.core.vector,thresholds,scheme);var chosen = cljs.core.last.call(null,cljs.core.first.call(null,cljs.core.filter.call(null,((function (scheme_thresholds){
-return (function (p__28404){var vec__28405 = p__28404;var t = cljs.core.nth.call(null,vec__28405,(0),null);var i = cljs.core.nth.call(null,vec__28405,(1),null);return (value < t);
+return (function (p__28484){var vec__28485 = p__28484;var t = cljs.core.nth.call(null,vec__28485,(0),null);var i = cljs.core.nth.call(null,vec__28485,(1),null);return (value < t);
 });})(scheme_thresholds))
 ,scheme_thresholds)));var or__3639__auto__ = chosen;if(cljs.core.truth_(or__3639__auto__))
 {return or__3639__auto__;
@@ -53,19 +53,19 @@ return (function (p__28404){var vec__28405 = p__28404;var t = cljs.core.nth.call
 /**
 * return a map of {key-value => colours}
 */
-clustermap.data.colorchooser.choose = (function choose(color_scheme_spec,scale,key,variable,data){var color_scheme = cljs.core.get_in.call(null,clustermap.data.colorbrewer.schemes,cljs.core.map.call(null,cljs.core.keyword,color_scheme_spec));var col_count = cljs.core.count.call(null,color_scheme);var values = cljs.core.filter.call(null,cljs.core.identity,clustermap.data.picker.pick_variable.call(null,variable,data));var min_value = cljs.core.apply.call(null,cljs.core.min,values);var max_value = cljs.core.apply.call(null,cljs.core.max,values);var thresholds = (function (){var pred__28409 = cljs.core._EQ_;var expr__28410 = scale;if(cljs.core.truth_(pred__28409.call(null,new cljs.core.Keyword(null,"log","log",-1595516004),expr__28410)))
+clustermap.data.colorchooser.choose = (function choose(color_scheme_spec,scale,key,variable,data){var color_scheme = cljs.core.get_in.call(null,clustermap.data.colorbrewer.schemes,cljs.core.map.call(null,cljs.core.keyword,color_scheme_spec));var col_count = cljs.core.count.call(null,color_scheme);var values = cljs.core.filter.call(null,cljs.core.identity,clustermap.data.picker.pick_variable.call(null,variable,data));var min_value = cljs.core.apply.call(null,cljs.core.min,values);var max_value = cljs.core.apply.call(null,cljs.core.max,values);var thresholds = (function (){var pred__28489 = cljs.core._EQ_;var expr__28490 = scale;if(cljs.core.truth_(pred__28489.call(null,new cljs.core.Keyword(null,"log","log",-1595516004),expr__28490)))
 {return clustermap.data.colorchooser.log_scale.call(null,min_value,max_value,col_count);
 } else
-{if(cljs.core.truth_(pred__28409.call(null,new cljs.core.Keyword(null,"linear","linear",872268697),expr__28410)))
+{if(cljs.core.truth_(pred__28489.call(null,new cljs.core.Keyword(null,"linear","linear",872268697),expr__28490)))
 {return clustermap.data.colorchooser.linear_scale.call(null,min_value,max_value,col_count);
 } else
-{if(cljs.core.truth_(pred__28409.call(null,new cljs.core.Keyword(null,"auto","auto",-566279492),expr__28410)))
+{if(cljs.core.truth_(pred__28489.call(null,new cljs.core.Keyword(null,"auto","auto",-566279492),expr__28490)))
 {return clustermap.data.colorchooser.auto_scale.call(null,col_count,values);
 } else
-{if(cljs.core.truth_(pred__28409.call(null,new cljs.core.Keyword(null,"auto-no-outliers","auto-no-outliers",-1448217833),expr__28410)))
+{if(cljs.core.truth_(pred__28489.call(null,new cljs.core.Keyword(null,"auto-no-outliers","auto-no-outliers",-1448217833),expr__28490)))
 {return clustermap.data.colorchooser.auto_no_outliers_scale.call(null,col_count,(5),values);
 } else
-{throw (new Error(("No matching clause: "+cljs.core.str.cljs$core$IFn$_invoke$arity$1(expr__28410))));
+{throw (new Error(("No matching clause: "+cljs.core.str.cljs$core$IFn$_invoke$arity$1(expr__28490))));
 }
 }
 }
