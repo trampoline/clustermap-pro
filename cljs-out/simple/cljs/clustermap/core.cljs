@@ -334,7 +334,9 @@
                                        :index "companies"
                                        :index-type "company"
                                        :key "boundaryline_id"
-                                       :variable "!latest_employee_count"}
+                                       :variable "!latest_employee_count"
+                                       ;; :scale-attr "population"
+                                       }
                     :colorchooser {:scheme [:RdPu :6]
                                    :scale :auto
                                    :variable :boundaryline_id_doc_count}
