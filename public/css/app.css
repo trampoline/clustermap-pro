@@ -3281,6 +3281,12 @@ h1.logo {
   height: 16px;
   background-position: 0 -36px;
 }
+.filter-controls {
+  padding: 0 0 0 15px;
+}
+.filter-controls button {
+  margin: 0 10px 5px 0;
+}
 .filter-items {
   display: none;
   list-style: none;

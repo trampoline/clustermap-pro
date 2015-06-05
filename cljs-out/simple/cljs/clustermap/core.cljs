@@ -221,6 +221,7 @@
                                             :label "Sector"
                                             :sorted false
                                             :visible true
+                                            :controls true
                                             :tag-type "broad_12_sectors"
                                             :tags [
                                                    {:value "construction_and_utilities" :label "Construction and utilities"}

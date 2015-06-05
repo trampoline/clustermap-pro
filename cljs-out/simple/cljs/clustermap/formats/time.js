@@ -7,7 +7,7 @@ goog.require('cljs_time.coerce');
 goog.require('cljs_time.coerce');
 goog.require('cljs_time.format');
 goog.require('cljs_time.format');
-clustermap.formats.time.get_year = (function get_year(t){var G__23084 = t;var G__23084__$1 = (((G__23084 == null))?null:(new Date(G__23084)));var G__23084__$2 = (((G__23084__$1 == null))?null:G__23084__$1.getYear());var G__23084__$3 = (((G__23084__$2 == null))?null:(G__23084__$2 + (1900)));return G__23084__$3;
+clustermap.formats.time.get_year = (function get_year(t){var G__23132 = t;var G__23132__$1 = (((G__23132 == null))?null:(new Date(G__23132)));var G__23132__$2 = (((G__23132__$1 == null))?null:G__23132__$1.getYear());var G__23132__$3 = (((G__23132__$2 == null))?null:(G__23132__$2 + (1900)));return G__23132__$3;
 });
 clustermap.formats.time.date_formatter = cljs_time.format.formatters.call(null,new cljs.core.Keyword(null,"date","date",-1463434462));
 clustermap.formats.time.coerce_from_string = (function coerce_from_string(s){if(typeof s === 'string')
@@ -16,7 +16,7 @@ clustermap.formats.time.coerce_from_string = (function coerce_from_string(s){if(
 {return s;
 }
 });
-clustermap.formats.time.format_date = (function format_date(t){var G__23086 = t;var G__23086__$1 = (((G__23086 == null))?null:clustermap.formats.time.coerce_from_string.call(null,G__23086));var G__23086__$2 = (((G__23086__$1 == null))?null:cljs_time.format.unparse.call(null,clustermap.formats.time.date_formatter,G__23086__$1));return G__23086__$2;
+clustermap.formats.time.format_date = (function format_date(t){var G__23134 = t;var G__23134__$1 = (((G__23134 == null))?null:clustermap.formats.time.coerce_from_string.call(null,G__23134));var G__23134__$2 = (((G__23134__$1 == null))?null:cljs_time.format.unparse.call(null,clustermap.formats.time.date_formatter,G__23134__$1));return G__23134__$2;
 });
 clustermap.formats.time.now = (function now(){return cljs_time.core.now.call(null);
 });
