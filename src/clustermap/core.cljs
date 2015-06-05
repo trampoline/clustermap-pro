@@ -9,7 +9,7 @@
    [clustermap.app :as app]
    [clustermap.filters :as filters]
    [clustermap.formats.time :as time]
-   [clustermap.formats.number :as num]
+   [clustermap.formats.number :as num :refer [div! *!]]
    [clustermap.formats.money :as money]
    [clustermap.components.map :as map]
    [clustermap.components.filter :as filter]
@@ -427,12 +427,27 @@
                        :size 50
                        :columns [
                                  {:key :!name :sortable true :label "Name" :render-fn company-link-render-fn}
-                                 ;; {:key :?tags :label "Hub" :render-fn (fn [tags] (->> tags (filter (fn [t] (= "startup_region" (:type t)))) first :description))}
                                  {:key :!formation_date :sortable true :label "Formation date" :render-fn #(time/format-date %)}
                                  ;; {:key :!latest_accounts_date :label "Filing date" :render-fn #(time/format-date %)}
                                  {:key :!latest_turnover :sortable true :label "Turnover" :render-fn #(money/readable % :sf 3 :curr "")}
+                                 {:key :!latest_turnover_delta
+                                  :sortable true
+                                  :label "Turn. change"
+                                  :render-fn (fn [v r]
+                                               (let [pv (:!latest_turnover r)
+                                                     v (*! 100 (div! v pv))]
+                                                 [:span (sign-icon v)
+                                                  (money/readable v :sf 2 :curr "") "%"]))}
                                  {:key :!latest_employee_count :sortable true :label "Employees" :render-fn #(num/readable % :dec 0)}
-                                 ;; {:key :!total_funding :sortable true :label "Funding" :render-fn #(money/readable % :sf 3 :curr "")}
+                                 {:key :!latest_employee_count_delta
+                                  :sortable true
+                                  :label "Emp. change"
+                                  :render-fn (fn [v r]
+                                               (let [pv (:!latest_employee_count r)
+                                                     v (*! 100 (div! v pv))]
+                                                 [:span (sign-icon v)
+                                                  (money/readable v :sf 2 :curr "") "%"]))}
+
                                  ]}
             :table-data nil}
 
