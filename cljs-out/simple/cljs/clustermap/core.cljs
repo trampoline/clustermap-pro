@@ -19,6 +19,7 @@
    [clustermap.components.map-report :as map-report]
    [clustermap.components.table :as table]
    [clustermap.components.ranges-table :as ranges-table]
+   [clustermap.components.ranges-chart :as ranges-chart]
    [clustermap.components.timeline-chart :as timeline-chart]
    [clustermap.components.tag-histogram :as tag-histogram]
    [clustermap.components.geo-sponsors :as geo-sponsors]
@@ -508,41 +509,45 @@
                       :tag-data nil
                       :tag-agg-data nil}
 
-   :revenue-bands-table {:controls {:index "companies"
-                                    :index-type "company"
+   :revenue-bands {:controls {:index "companies"
+                              :index-type "company"
 
-                                    :rows [{:key "2014" :label "2014"}]
-                                    :row-path [:accounts :row]
-                                    :row-aggs {:accounts
-                                               {:nested {:path "?accounts"}
+                              :rows [{:key "2013" :label "2013"}]
+                              :row-path [:accounts :row]
+                              :row-aggs {:accounts
+                                         {:nested {:path "?accounts"}
 
-                                                :aggs
-                                                {:row {:range {:field "accounts_date"
-                                                               :ranges [{:key "2014" :from "2014-01-01" :to "2015-01-01"}]}}}} }
+                                          :aggs
+                                          {:row {:range {:field "accounts_date"
+                                                         :ranges [{:key "2013" :from "2013-01-01" :to "2014-01-01"}]}}}} }
 
-                                    :cols [{:key "low"  :label "< £500k"}
-                                           {:key "500k" :label "> £500k"}
-                                           {:key "5m"   :label "> £5m"}
-                                           {:key "10m"  :label "> £10m"}
-                                           {:key "100m" :label "> £100m"}]
-                                    :col-path [:col]
-                                    :col-aggs {:col
-                                               {:range {:field "turnover"
-                                                        :ranges [{:key "low"  :from 0         :to 500000     :label "< £500k"}
-                                                                 {:key "500k" :from 500000    :to 5000000    :label "> £500k"}
-                                                                 {:key "5m"   :from 5000000   :to 10000000   :label "> £5m"}
-                                                                 {:key "10m"  :from 10000000  :to 100000000  :label "> £10m"}
-                                                                 {:key "100m" :from 100000000 :to 1000000000 :label "> £100m"}] }}}
+                              :cols [{:key "lt50k"  :label "Less than £50k"}
+                                     {:key "50k"  :label "£50k - £100k"}
+                                     {:key "100k" :label "£100k - £250k"}
+                                     {:key "250k"   :label "£250k - £500k"}
+                                     {:key "500k"  :label "£500k - £1m"}
+                                     {:key "1m"  :label "£1m - £5m"}
+                                     {:key "5m" :label "More than £5m"}]
+                              :col-path [:col]
+                              :col-aggs {:col
+                                         {:range {:field "turnover"
+                                                  :ranges [{:key "lt50k" :from 0       :to 50000 }
+                                                           {:key "50k"   :from 50000   :to 100000 }
+                                                           {:key "100k"  :from 100000  :to 250000 }
+                                                           {:key "250k"  :from 250000  :to 500000}
+                                                           {:key "500k"  :from 500000  :to 1000000}
+                                                           {:key "1m"    :from 1000000 :to 5000000}
+                                                           {:key "5m"    :from 5000000 }] }}}
 
-                                    :metric-path [:companies :metric]
-                                    :metric-aggs {:companies
-                                                  {:reverse_nested {}
-                                                   :aggs
-                                                   {:metric {:cardinality {:field "?natural_id"}}}}}
-                                    :render-fn (fn [v] (num/fnum v))
+                              :metric-path [:companies :metric]
+                              :metric-aggs {:companies
+                                            {:reverse_nested {}
+                                             :aggs
+                                             {:metric {:cardinality {:field "?natural_id"}}}}}
+                              :render-fn (fn [v] (num/fnum v))
 
-                                    }
-                         :table-data nil}
+                              }
+                   :table-data nil}
 
    :view :trends
 
@@ -655,10 +660,10 @@
    ;;  :target "revenue-bands-var-select-component"
    ;;  :path [:revenue-bands-table :controls :col-aggs :col :range]}
 
-   {:name :revenue-bands-table
-    :f ranges-table/ranges-table-component
-    :target "revenue-bands-table-component"
-    :paths {:table-state [:revenue-bands-table]
+   {:name :revenue-bands-chart
+    :f ranges-chart/ranges-chart-component
+    :target "revenue-bands-chart-component"
+    :paths {:table-state [:revenue-bands]
             :filter-spec [:dynamic-filter-spec :composed :all]}}
 
    ;; {:name :company-turnover-timeline
