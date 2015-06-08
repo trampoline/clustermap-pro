@@ -550,6 +550,50 @@
                               }
                    :table-data nil}
 
+   :employment-bands {:controls {:index "companies"
+                                 :index-type "company"
+
+                                 :rows [{:key "2013" :label "2013"}]
+                                 :row-path [:accounts :row]
+                                 :row-aggs {:accounts
+                                            {:nested {:path "?accounts"}
+
+                                             :aggs
+                                             {:row {:range {:field "accounts_date"
+                                                            :ranges [{:key "2013" :from "2013-01-01" :to "2014-01-01"}]}}}} }
+
+                                 :cols [{:key "l"    :label "1-4"}
+                                        {:key "5"    :label "5-9"}
+                                        {:key "10"   :label "10-19"}
+                                        {:key "20"   :label "20-49"}
+                                        {:key "50"   :label "50-99"}
+                                        {:key "100"  :label "100-249"}
+                                        {:key "250"  :label "250-499"}
+                                        {:key "500"  :label "500-2499"}
+                                        {:key "2500" :label "2500 or more"}]
+                                 :col-path [:col]
+                                 :col-aggs {:col
+                                            {:range {:field "employee_count"
+                                                     :ranges [{:key "l"    :from 0    :to 5 }
+                                                              {:key "5"    :from 5    :to 10 }
+                                                              {:key "10"   :from 10   :to 20 }
+                                                              {:key "20"   :from 20   :to 50 }
+                                                              {:key "50"   :from 50   :to 100 }
+                                                              {:key "100"  :from 100  :to 250 }
+                                                              {:key "250"  :from 250  :to 500 }
+                                                              {:key "500"  :from 500  :to 2500 }
+                                                              {:key "2500" :from 2500 }] }}}
+
+                                 :metric-path [:companies :metric]
+                                 :metric-aggs {:companies
+                                               {:reverse_nested {}
+                                                :aggs
+                                                {:metric {:cardinality {:field "?natural_id"}}}}}
+                                 :render-fn (fn [v] (num/fnum v))
+
+                                 }
+                      :table-data nil}
+
    :view :trends
 
    :company-close {:text "Close"
@@ -665,6 +709,12 @@
     :f ranges-chart/ranges-chart-component
     :target "revenue-bands-chart-component"
     :paths {:table-state [:revenue-bands]
+            :filter-spec [:dynamic-filter-spec :composed :all]}}
+
+   {:name :employment-bands-chart
+    :f ranges-chart/ranges-chart-component
+    :target "employment-bands-chart-component"
+    :paths {:table-state [:employment-bands]
             :filter-spec [:dynamic-filter-spec :composed :all]}}
 
    ;; {:name :company-turnover-timeline
