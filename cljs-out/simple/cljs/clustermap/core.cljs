@@ -351,33 +351,34 @@
                                    :scale :auto
                                    :variable :boundaryline_id_doc_count}
 
-                         :geotag-aggs {:query {:index-name "companies"
-                                               :index-type "company"
-                                               :nested-path "?tags"
-                                               :nested-attr "tag"
-                                               :nested-filter {:term {:type "startup_region"}}
-                                               :stats-attr "!total_funding"}
-                                       :tag-type "startup_region"
-                                       :icon-render-fn (fn [tag stats]
-                                                         [:p (money/readable (:nested_attr_doc_count stats) :sf 2 :curr "")])
-                                       :popup-render-fn (fn [tag stats]
-                                                          [:p [:a {:href "#"} (:description tag)]])
-                                       :click-fn (fn [geotag geotag-agg e]
-                                                   ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
+                    :geotag-aggs {:query {:index-name "companies"
+                                          :index-type "company"
+                                          :nested-path "?tags"
+                                          :nested-attr "tag"
+                                          :nested-filter {:term {:type "uk_boroughs"}}
+                                          :stats-attr "?count"}
+                                  :tag-type "uk_boroughs"
+                                  :show-at-zoom-fn (fn [z] (< 7 z 10))
+                                  :icon-render-fn (fn [tag stats]
+                                                    [:p (money/readable (:nested_attr_doc_count stats) :sf 2 :curr "")])
+                                  :popup-render-fn (fn [tag stats]
+                                                     [:p [:a {:href "#"} (:description tag)]])
+                                  :click-fn (fn [geotag geotag-agg e]
+                                              ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
 
-                                                   (let [boundaryline-id (:tag geotag)
-                                                         ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
-                                                     (go
-                                                       (let [bl (<! ch)
-                                                             envelope (aget bl "envelope")
-                                                             bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
-                                                         (when bounds
-                                                           (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
+                                              (let [boundaryline-id (:tag geotag)
+                                                    ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
+                                                (go
+                                                  (let [bl (<! ch)
+                                                        envelope (aget bl "envelope")
+                                                        bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
+                                                    (when bounds
+                                                      (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
 
-                                                           (make-boundaryline-selection boundaryline-id))))))
+                                                      (make-boundaryline-selection boundaryline-id))))))
 
-                                       :geotag-data nil
-                                       :geotag-agg-data nil}
+                                  :geotag-data nil
+                                  :geotag-agg-data nil}
 
                     }
          :data nil}
