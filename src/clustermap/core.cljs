@@ -29,7 +29,6 @@
    [clustermap.components.company-info :as company-info]
    [clustermap.components.nav-button :as nav-button]
    [clustermap.boundarylines :as bl]
-   [secretary.core :as secretary :include-macros true :refer [defroute]]
    [cljs.core.async :refer [chan <! put! sliding-buffer >!]]
    [schema.core :as s :refer-macros [defschema]]))
 
