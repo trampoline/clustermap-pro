@@ -458,6 +458,7 @@
                              :metrics {:variable :!turnover :title "-" :metric :sum}
                              :interval "year"
                              :before "2014-01-01"}
+                     :color "#28828a"
                      :timeline-data nil}
 
    :company-turnover-timeline {:query {:index-name "company-accounts"
@@ -466,6 +467,7 @@
                                        :metrics {:variable :!turnover :title "Turnover (£)"}
                                        :interval "year"
                                        :before (time/today-str)}
+                               :color "#28828a"
                                :timeline-data nil}
 
    :company-employment-timeline {:query {:index-name "company-accounts"
@@ -474,27 +476,11 @@
                                          :metrics {:variable :!employee_count :title "Employees"}
                                          :interval "year"
                                          :before (time/today-str)}
+                                 :color "#28828a"
                                  :timeline-data nil}
 
    :geo-sponsors {:controls {:max-count 1}
                   :data nil}
-
-   :city-barchart {:query {:index-name "companies"
-                           :index-type "company"
-                           :nested-path "?tags"
-                           :nested-attr "tag"
-                           :nested-filter {:term {:type "startup_region"}}
-                           :stats-attr "!total_funding"}
-                   :metrics [{:metric :sum
-                              :title "Total"
-                              :label-formatter (fn [] (this-as this (money/readable (.-value this) :sf 2 :curr "")))}
-                             {:metric :nested_attr_doc_count
-                              :title  "# of Companies"
-                              :label-formatter (fn [] (this-as this (money/readable (.-value this) :sf 2 :curr "")))}
-                             ]
-                   :tag-type "startup_region"
-                   :tag-data nil
-                   :tag-agg-data nil}
 
    :sector-histogram {:query {:index-name "companies"
                               :index-type "company"
@@ -505,12 +491,17 @@
                       :metrics [{:metric :sum
                                  :title "-"
                                  :label-formatter (fn [] (this-as this (money/readable (.-value this) :sf 2 :curr "")))}]
+                      :bar-width 20
+                      :bar-color "#28828a"
+
                       :tag-type "broad_12_sectors"
                       :tag-data nil
                       :tag-agg-data nil}
 
    :revenue-bands {:controls {:index "companies"
                               :index-type "company"
+
+                              :color "#28828a"
 
                               :rows [{:key "2013" :label "2013"}]
                               :row-path [:accounts :row]
@@ -551,6 +542,8 @@
 
    :employment-bands {:controls {:index "companies"
                                  :index-type "company"
+
+                                 :color "#28828a"
 
                                  :rows [{:key "2013" :label "2013"}]
                                  :row-path [:accounts :row]
@@ -642,10 +635,6 @@
     :target "company-close"
     :paths {:nav-button [:company-close]}}
 
-   ;; {:name :city-barchart-var-select
-   ;;  :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!total_funding" "Total investment (£)"] ["!latest_employee_count" "Employee count"] ["!latest_turnover" "Turnover (£)"]])
-   ;;  :target "city-barchart-var-select-component"
-   ;;  :path [:city-barchart :query]}
 
    ;; {:name :region-investment-histogram
    ;;  :f tag-histogram/tag-histogram
