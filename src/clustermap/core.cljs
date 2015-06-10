@@ -430,24 +430,36 @@
                                  {:key :!name :sortable true :label "Name" :render-fn company-link-render-fn}
                                  {:key :!formation_date :sortable true :label "Formation date" :render-fn #(time/format-date %)}
                                  ;; {:key :!latest_accounts_date :label "Filing date" :render-fn #(time/format-date %)}
-                                 {:key :!latest_turnover :sortable true :label "Turnover" :render-fn #(money/readable % :sf 3 :curr "")}
+                                 {:key :!latest_turnover
+                                  :sortable true
+                                  :label "Turnover"
+                                  :right-align true
+                                  :render-fn #(money/readable % :sf 3 :curr "")}
                                  {:key :!latest_turnover_delta
                                   :sortable true
                                   :label "Turn. change"
+                                  :right-align true
                                   :render-fn (fn [v r]
                                                (let [pv (:!latest_turnover r)
                                                      v (*! 100 (div! v pv))]
-                                                 [:span (sign-icon v)
-                                                  (money/readable v :sf 2 :curr "") "%"]))}
-                                 {:key :!latest_employee_count :sortable true :label "Employees" :render-fn #(num/readable % :dec 0)}
+                                                 [:span
+                                                  (money/readable v :sf 2 :curr "") "%"
+                                                  (sign-icon v)]))}
+                                 {:key :!latest_employee_count
+                                  :sortable true
+                                  :label "Employees"
+                                  :right-align true
+                                  :render-fn #(num/readable % :dec 0)}
                                  {:key :!latest_employee_count_delta
                                   :sortable true
                                   :label "Emp. change"
+                                  :right-align true
                                   :render-fn (fn [v r]
                                                (let [pv (:!latest_employee_count r)
                                                      v (*! 100 (div! v pv))]
-                                                 [:span (sign-icon v)
-                                                  (money/readable v :sf 2 :curr "") "%"]))}
+                                                 [:span
+                                                  (money/readable v :sf 2 :curr "") "%"
+                                                  (sign-icon v)]))}
 
                                  ]}
             :table-data nil}
