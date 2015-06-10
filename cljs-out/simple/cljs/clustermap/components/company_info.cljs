@@ -8,7 +8,7 @@
             [schema.core :as s :refer-macros [defschema]]
             [sablono.core :as html :refer-macros [html]]
             [clustermap.api :as api]
-            [clustermap.formats.number :as num]
+            [clustermap.formats.number :as num :refer [div! *! -! +!]]
             [clustermap.formats.money :as money]
             [clustermap.formats.time :as time]
             [clustermap.components.timeline-chart :as timeline-chart]))
@@ -27,9 +27,10 @@
 
 (defn stat-change
   [base change]
-  (when (and change base (not= 0 base))
-    (let [v (* 100 (/ change base))]
-      [:div.stat-change (sign-icon v) [:span (money/readable v :sf 2 :curr "") "%"]])))
+  (let [prev (-! base change)]
+    (when (and change base (not= 0 prev))
+      (let [v (*! 100 (div! change prev))]
+        [:div.stat-change (sign-icon v) [:span (num/mixed v) "%"]]))))
 
 (defn render*
   [record
@@ -79,7 +80,7 @@
        [:div.panel-body
         [:div.chart-heading
          [:h4.stat-title "Turnover"]
-         [:div.stat-amount [:small "£"] (money/readable (:latest_turnover record) :sf 2 :curr "")]
+         [:div.stat-amount [:small "£"] (num/mixed (:latest_turnover record))]
          (stat-change (:latest_turnover record) (:latest_turnover_delta record))]
         [:div.chart-container-lg
          (om/build timeline-chart/timeline-chart {:timeline-chart turnover-timeline
@@ -89,7 +90,7 @@
        [:div.panel-body
         [:div.chart-heading
          [:h4.stat-title "Employment"]
-         [:div.stat-amount (num/readable (:latest_employee_count record) :sf 3)]
+         [:div.stat-amount (num/mixed (:latest_employee_count record))]
          (stat-change (:latest_employee_count record) (:latest_employee_count_delta record))]
         [:div.chart-container-lg
          (om/build timeline-chart/timeline-chart {:timeline-chart employment-timeline

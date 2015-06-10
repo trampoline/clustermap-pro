@@ -9,7 +9,7 @@
    [clustermap.app :as app]
    [clustermap.filters :as filters]
    [clustermap.formats.time :as time]
-   [clustermap.formats.number :as num :refer [div! *!]]
+   [clustermap.formats.number :as num :refer [div! *! -! +!]]
    [clustermap.formats.money :as money]
    [clustermap.components.map :as map]
    [clustermap.components.filter :as filter]
@@ -306,7 +306,7 @@
                                                                [:div
                                                                 (time/format-date (:raised_date fr))
                                                                 " : "
-                                                                (money/readable (:raised_amount_usd fr) :sf 2 :curr "£")]
+                                                                (num/mixed (:raised_amount_usd fr) {:curr "£"})]
                                                                [:div (str/join ", " (for [inv (:investments fr)] (:investor_name inv)))]]))
                                        }
                                       {:key :directorships
@@ -359,7 +359,7 @@
                                   :tag-type "uk_boroughs"
                                   :show-at-zoom-fn (fn [z] (< 7 z 10))
                                   :icon-render-fn (fn [tag stats]
-                                                    [:p (money/readable (:nested_attr_doc_count stats) :sf 2 :curr "")])
+                                                    [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
                                   :popup-render-fn (fn [tag stats]
                                                      [:p [:a {:href "#"} (:description tag)]])
                                   :click-fn (fn [geotag geotag-agg e]
@@ -389,11 +389,11 @@
                                                :variables [{:key :?counter
                                                             :metric :viewfilter_doc_count
                                                             :label "Companies"
-                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr ""))}
+                                                            :render-fn (fn [v] (num/mixed v))}
                                                            {:key :!latest_turnover
                                                             :metric :sum
                                                             :label "Total turnover"
-                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr "£"))}
+                                                            :render-fn (fn [v] (num/mixed v {:curr "£"}))}
                                                            {:key :!latest_turnover_delta
                                                             :belongs-to :!latest_turnover
                                                             :metric :sum
@@ -401,12 +401,12 @@
                                                             :value-fn (fn [btv v] (* 100 (/ v btv)))
                                                             :render-fn (fn [v] [:div.stat-change
                                                                                 (sign-icon v)
-                                                                                (money/readable v :sf 2 :curr "")
+                                                                                (num/mixed v)
                                                                                 "%"])}
                                                            {:key :!latest_employee_count
                                                             :metric :sum
                                                             :label "Total employees"
-                                                            :render-fn (fn [v] (money/readable v :sf 2 :curr ""))}
+                                                            :render-fn (fn [v] (num/mixed v))}
                                                            {:key :!latest_employee_count_delta
                                                             :belongs-to :!latest_employee_count
                                                             :metric :sum
@@ -414,7 +414,7 @@
                                                             :value-fn (fn [btv v] (* 100 (/ v btv)))
                                                             :render-fn (fn [v] [:div.stat-change
                                                                                 (sign-icon v)
-                                                                                (money/readable v :sf 2 :curr "")
+                                                                                (num/mixed v)
                                                                                 "%"])}
                                                            ]}}
                     :summary-stats nil
@@ -430,24 +430,38 @@
                                  {:key :!name :sortable true :label "Name" :render-fn company-link-render-fn}
                                  {:key :!formation_date :sortable true :label "Formation date" :render-fn #(time/format-date %)}
                                  ;; {:key :!latest_accounts_date :label "Filing date" :render-fn #(time/format-date %)}
-                                 {:key :!latest_turnover :sortable true :label "Turnover" :render-fn #(money/readable % :sf 3 :curr "")}
+                                 {:key :!latest_turnover
+                                  :sortable true
+                                  :label "Turnover"
+                                  :right-align true
+                                  :render-fn #(num/mixed %)}
                                  {:key :!latest_turnover_delta
                                   :sortable true
                                   :label "Turn. change"
+                                  :right-align true
                                   :render-fn (fn [v r]
-                                               (let [pv (:!latest_turnover r)
+                                               (let [pv (-! (:!latest_turnover r) v)
                                                      v (*! 100 (div! v pv))]
-                                                 [:span (sign-icon v)
-                                                  (money/readable v :sf 2 :curr "") "%"]))}
-                                 {:key :!latest_employee_count :sortable true :label "Employees" :render-fn #(num/readable % :dec 0)}
+                                                 (when v
+                                                   [:span
+                                                    (num/mixed v) "%"
+                                                    (sign-icon v)])))}
+                                 {:key :!latest_employee_count
+                                  :sortable true
+                                  :label "Employees"
+                                  :right-align true
+                                  :render-fn #(num/mixed %)}
                                  {:key :!latest_employee_count_delta
                                   :sortable true
                                   :label "Emp. change"
+                                  :right-align true
                                   :render-fn (fn [v r]
-                                               (let [pv (:!latest_employee_count r)
+                                               (let [pv (-! (:!latest_employee_count r) v)
                                                      v (*! 100 (div! v pv))]
-                                                 [:span (sign-icon v)
-                                                  (money/readable v :sf 2 :curr "") "%"]))}
+                                                 (when v
+                                                   [:span
+                                                    (num/mixed v) "%"
+                                                    (sign-icon v)])))}
 
                                  ]}
             :table-data nil}
@@ -490,7 +504,7 @@
                               :stats-attr "!latest_turnover"}
                       :metrics [{:metric :sum
                                  :title "-"
-                                 :label-formatter (fn [] (this-as this (money/readable (.-value this) :sf 2 :curr "")))}]
+                                 :label-formatter (fn [] (this-as this (num/mixed (.-value this))))}]
                       :bar-width 20
                       :bar-color "#28828a"
 
