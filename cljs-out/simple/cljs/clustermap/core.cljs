@@ -350,6 +350,17 @@
                                    :scale :auto
                                    :variable :boundaryline_id_doc_count}
 
+                    :geohash-aggs {:query {:index-name "companies"
+                                           :index-type "company"
+                                           :geo-point-field "!location"}
+                                   :show-at-zoom-fn (fn [z] (not (< 7 z 10)))
+                                   :precision-fn (fn [z] (/ z 2))
+                                   :icon-render-fn (fn [geohash-agg]
+                                                     [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
+                                   :popup-render-fn (fn [geohash-agg]
+                                                      [:p [:a {:href "#"} (:description tag)]])
+                                   :geohash-agg-data nil}
+
                     :geotag-aggs {:query {:index-name "companies"
                                           :index-type "company"
                                           :nested-path "?tags"
