@@ -3558,6 +3558,8 @@ h1.logo {
   border-radius: 20px;
 }
 .marker-cluster div {
+  display: inline-block;
+  vertical-align: middle;
   width: 30px;
   height: 30px;
   margin-left: 5px;

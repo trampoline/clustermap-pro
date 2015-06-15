@@ -354,11 +354,9 @@
                                            :index-type "company"
                                            :geo-point-field "!location"}
                                    :show-at-zoom-fn (fn [z] (not (< 7 z 10)))
-                                   :precision-fn (fn [z] (/ z 2))
+                                   :precision-fn (fn [z] (- (/ z 2) 0.5))
                                    :icon-render-fn (fn [geohash-agg]
                                                      [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
-                                   :popup-render-fn (fn [geohash-agg]
-                                                      [:p [:a {:href "#"} (:description tag)]])
                                    :geohash-agg-data nil}
 
                     :geotag-aggs {:query {:index-name "companies"
@@ -371,8 +369,6 @@
                                   :show-at-zoom-fn (fn [z] (< 7 z 10))
                                   :icon-render-fn (fn [tag stats]
                                                     [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
-                                  :popup-render-fn (fn [tag stats]
-                                                     [:p [:a {:href "#"} (:description tag)]])
                                   :click-fn (fn [geotag geotag-agg e]
                                               ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
 
