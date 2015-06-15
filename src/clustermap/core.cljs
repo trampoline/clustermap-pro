@@ -354,7 +354,7 @@
                                            :index-type "company"
                                            :geo-point-field "!location"}
                                    :show-at-zoom-fn (fn [z] (not (< 7 z 10)))
-                                   :precision-fn (fn [z] (/ z 2))
+                                   :precision-fn (fn [z] (- (/ z 2) 0.5))
                                    :icon-render-fn (fn [geohash-agg]
                                                      [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
                                    :geohash-agg-data nil}
