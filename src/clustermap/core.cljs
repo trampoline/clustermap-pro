@@ -15,6 +15,7 @@
    [clustermap.components.filter :as filter]
    [clustermap.components.search :as search]
    [clustermap.components.select-chooser :as select-chooser]
+   [clustermap.components.checkbox-boolean :as checkbox-boolean]
    [clustermap.components.color-scale :as color-scale]
    [clustermap.components.map-report :as map-report]
    [clustermap.components.table :as table]
@@ -28,6 +29,7 @@
    [clustermap.components.text :as text]
    [clustermap.components.company-info :as company-info]
    [clustermap.components.nav-button :as nav-button]
+   [clustermap.components.action-button :as action-button]
    [clustermap.boundarylines :as bl]
    [cljs.core.async :refer [chan <! put! sliding-buffer >!]]
    [schema.core :as s :refer-macros [defschema]]))
@@ -328,27 +330,34 @@
                                   :doubleClickZoom true
                                   :boxZoom true}
 
-                    :location {:cluster true
-                               :marker-render-fn (fn [location-sites]
-                                                   (hiccups/html
-                                                    [:div
-                                                     (when (> (count location-sites) 1)
-                                                       [:div [:p (num/compact (count location-sites) {:sf 2})]])
-                                                     [:div.minicharts
-                                                      [:div.minichart
-                                                       [:div.minibar.metric-1
-                                                        {:style (str "width: "
-                                                                     (num/log-percent-scale
-                                                                      10
-                                                                      (->> location-sites (map :latest_turnover) (reduce +)))
-                                                                     "%")}]]
-                                                      [:div.minichart
-                                                       [:div.minibar.metric-2
-                                                        {:style (str "width: "
-                                                                     (num/log-percent-scale
-                                                                      5
-                                                                      (->> location-sites (map :latest_employee_count) (reduce +)))
-                                                                     "%")}]]]]))
+                    :location {:cluster false
+                               :marker-opts {:display-turnover false
+                                             :display-employee-count false}
+
+                               :marker-render-fn (fn [location-sites location-spec]
+                                                   (let [display-turnover (get-in location-spec [:marker-opts :display-turnover])
+                                                         display-employee-count (get-in location-spec [:marker-opts :display-employee-count])]
+                                                     (hiccups/html
+                                                      [:div
+                                                       (when (> (count location-sites) 1)
+                                                         [:div [:p (num/compact (count location-sites) {:sf 2})]])
+                                                       [:div.minicharts
+                                                        (when display-turnover
+                                                          [:div.minichart
+                                                           [:div.minibar.metric-1
+                                                            {:style (str "width: "
+                                                                         (num/table-percent-scale
+                                                                          [0 1000000 10000000]
+                                                                          (->> location-sites (map :latest_turnover) (reduce +)))
+                                                                         "%")}]])
+                                                        (when display-employee-count
+                                                          [:div.minichart
+                                                           [:div.minibar.metric-2
+                                                            {:style (str "width: "
+                                                                         (num/table-percent-scale
+                                                                          [0 5 100]
+                                                                          (->> location-sites (map :latest_employee_count) (reduce +)))
+                                                                         "%")}]])]])))
                                :item-render-fn (fn [i]
                                                  [:div.item
                                                   [:div.name (get i :name)]
@@ -640,6 +649,14 @@
                    :target-view "main"
                    :class "btn btn-primary"}
 
+   :reset-map-view {:text "Reset view"
+                    :action (fn [e]
+                              (swap! (get-app-state-atom)
+                                     assoc-in
+                                     [:map :controls :bounds]
+                                     (get-in @(get-app-state-atom) [:map :controls :initial-bounds])))
+                    :class "btn btn-default"}
+
    })
 
 
@@ -683,6 +700,20 @@
     :target "company-close"
     :paths {:nav-button [:company-close]}}
 
+   {:name :reset-map-view
+    :f action-button/action-button-component
+    :target "reset-map-view-button-component"
+    :paths {:action-button [:reset-map-view]}}
+
+   {:name :display-minichart-turnover
+    :f (partial checkbox-boolean/checkbox-boolean-component :display-turnover)
+    :target "display-minichart-turnover-component"
+    :path [:map :controls :location :marker-opts]}
+
+   {:name :display-minichart-employee-count
+    :f (partial checkbox-boolean/checkbox-boolean-component :display-employee-count)
+    :target "display-minichart-employee-count-component"
+    :path [:map :controls :location :marker-opts]}
 
    ;; {:name :region-investment-histogram
    ;;  :f tag-histogram/tag-histogram
