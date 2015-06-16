@@ -328,7 +328,8 @@
                                   :doubleClickZoom true
                                   :boxZoom true}
 
-                    :location {:marker-render-fn (fn [location-sites]
+                    :location {:cluster true
+                               :marker-render-fn (fn [location-sites]
                                                    (hiccups/html
                                                     [:div
                                                      (when (> (count location-sites) 1)
