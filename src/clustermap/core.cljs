@@ -326,15 +326,41 @@
                                   :touchZoom true
                                   :scrollWheelZoom false
                                   :doubleClickZoom true
-                                  :boxZoom true
-                                  }
-                    :link-render-fn (fn [r]
-                                      [:a {:href (str "#") :target "_blank"}
-                                       (get r :name)])
-                    :link-click-fn (fn [r e]
-                                     (make-company-selection (:natural_id r))
-                                     (app/navigate @app-instance "company")
-                                     (.log js/console (clj->js ["CLICK" r e])))
+                                  :boxZoom true}
+
+                    :location {:marker-render-fn (fn [location-sites]
+                                                   (hiccups/html
+                                                    [:div
+                                                     (when (> (count location-sites) 1)
+                                                       [:div [:p (num/compact (count location-sites) {:sf 2})]])
+                                                     [:div.minicharts
+                                                      [:div.minichart
+                                                       [:div.minibar.metric-1
+                                                        {:style (str "width: "
+                                                                     (num/log-percent-scale
+                                                                      10
+                                                                      (->> location-sites (map :latest_turnover) (reduce +)))
+                                                                     "%")}]]
+                                                      [:div.minichart
+                                                       [:div.minibar.metric-2
+                                                        {:style (str "width: "
+                                                                     (num/log-percent-scale
+                                                                      5
+                                                                      (->> location-sites (map :latest_employee_count) (reduce +)))
+                                                                     "%")}]]]]))
+                               :item-render-fn (fn [i]
+                                                 [:div.item
+                                                  [:div.name (get i :name)]
+                                                  [:div.metrics
+                                                   [:div.metric.metric-1
+                                                    [:span.name "Tur"] [:span.value (num/compact (:latest_turnover i))]]
+                                                   [:div.metric.metric-2
+                                                    [:span.name "Emp"] [:span.value (num/compact (:latest_employee_count i))]]]])
+                               :item-click-fn (fn [r e]
+                                                     (make-company-selection (:natural_id r))
+                                                     (app/navigate @app-instance "company")
+                                                     (.log js/console (clj->js ["CLICK" r e])))}
+
                     :zoom nil
                     :bounds nil
                     :show-points true
