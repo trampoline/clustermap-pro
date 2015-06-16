@@ -107,6 +107,16 @@ clustermap.formats.number.round_decimal = (function round_decimal(n,dec_places){
 {return n;
 }
 });
+/**
+* return a % representing the size of a +ve number compared to the scale max
+* - logmax : a power of 10
+* - n : any number
+* returns an integer in the range 0-100
+*/
+clustermap.formats.number.log_percent_scale = (function log_percent_scale(logmax,n){var n__$1 = (function (){var x__3946__auto__ = n;var y__3947__auto__ = (0);return ((x__3946__auto__ > y__3947__auto__) ? x__3946__auto__ : y__3947__auto__);
+})();var l = (Math.log(n__$1) / Math.log((10)));var l__$1 = (function (){var x__3953__auto__ = l;var y__3954__auto__ = logmax;return ((x__3953__auto__ < y__3954__auto__) ? x__3953__auto__ : y__3954__auto__);
+})();return Math.round(((100) * (l__$1 / logmax)));
+});
 clustermap.formats.number.prefix_sign = (function prefix_sign(n_str,n,plus_QMARK_){if((n < (0)))
 {return ("-"+cljs.core.str.cljs$core$IFn$_invoke$arity$1(n_str));
 } else
