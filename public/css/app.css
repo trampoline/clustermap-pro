@@ -3551,12 +3551,6 @@ h1.logo {
   font-size: 90%;
   padding-right: 5px;
 }
-.location-marker-popup-list .metric-1 .name {
-  background-color: #a50f15;
-}
-.location-marker-popup-list .metric-2 .name {
-  background-color: #22828a;
-}
 .minicharts {
   bottom: -22px;
   display: block;
