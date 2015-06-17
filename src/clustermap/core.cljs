@@ -722,7 +722,7 @@
    ;;          :filter-spec [:dynamic-filter-spec :composed :all]}}
 
    {:name :sector-histogram-var-select
-    :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!latest_turnover" "Total turnover (£)"] ["!latest_employee_count" "Total employees"]])
+    :f (partial select-chooser/select-chooser-component "Variable" :stats-attr [["!latest_turnover" "Total turnover (£)"] ["!latest_employee_count" "Total employees"] ["?counter" "Number of companies"]])
     :target "sector-histogram-var-select-component"
     :path [:sector-histogram :query]}
 
