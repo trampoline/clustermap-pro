@@ -391,6 +391,12 @@
                                            :geo-point-field "!location"}
                                    :show-at-zoom-fn (fn [z] (not (< 7 z 10)))
                                    :precision-fn (fn [z] (- (/ z 2) 0.5))
+                                   :colorchooser-factory-fn (fn [geohash-aggs]
+                                                              (let [chooser-fn (num/table-chooser-fn
+                                                                                [0.7 0.9]
+                                                                                (map :geohash-grid_doc_count geohash-aggs))]
+                                                                (fn [geohash-agg]
+                                                                  (chooser-fn (:geohash-grid_doc_count geohash-agg)))))
                                    :icon-render-fn (fn [geohash-agg]
                                                      [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
                                    :geohash-agg-data nil}
@@ -403,6 +409,13 @@
                                           :stats-attr "?count"}
                                   :tag-type "uk_boroughs"
                                   :show-at-zoom-fn (fn [z] (< 7 z 10))
+                                  :colorchooser-factory-fn (fn [geotag-aggs]
+                                                            (let [chooser-fn (num/table-chooser-fn
+                                                                              [0.7 0.9]
+                                                                              (map :nested_attr_doc_count geotag-aggs))]
+                                                              (fn [geotag-agg]
+                                                                (chooser-fn (:nested_attr_doc_count geotag-agg)))))
+
                                   :icon-render-fn (fn [tag stats]
                                                     [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
                                   :click-fn (fn [geotag geotag-agg e]
