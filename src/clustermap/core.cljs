@@ -331,7 +331,7 @@
                                   :boxZoom true}
 
                     :location {:cluster false
-                               :marker-opts {:display-turnover false
+                               :marker-opts {:display-turnover true
                                              :display-employee-count false}
 
                                :marker-render-fn (fn [location-sites location-spec]
