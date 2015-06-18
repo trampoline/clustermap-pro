@@ -30,6 +30,7 @@
    [clustermap.components.company-info :as company-info]
    [clustermap.components.nav-button :as nav-button]
    [clustermap.components.action-button :as action-button]
+   [clustermap.components.action-link :as action-link]
    [clustermap.boundarylines :as bl]
    [cljs.core.async :refer [chan <! put! sliding-buffer >!]]
    [schema.core :as s :refer-macros [defschema]]))
@@ -332,16 +333,22 @@
 
                     :location {:cluster false
                                :marker-opts {:display-turnover true
-                                             :display-employee-count false}
+                                             :display-employee-count false
+                                             :display-principal-name false}
 
                                :marker-render-fn (fn [location-sites location-spec]
                                                    (let [display-turnover (get-in location-spec [:marker-opts :display-turnover])
-                                                         display-employee-count (get-in location-spec [:marker-opts :display-employee-count])]
+                                                         display-employee-count (get-in location-spec [:marker-opts :display-employee-count])
+                                                         display-principal-name (get-in location-spec [:marker-opts :display-principal-name])]
                                                      (hiccups/html
                                                       [:div
                                                        (when (> (count location-sites) 1)
                                                          [:div [:p (num/compact (count location-sites) {:sf 2})]])
-                                                       [:div.minicharts
+                                                       [:div.marker-info
+                                                        (when display-principal-name
+                                                          [:div.name
+                                                           [:p
+                                                            (-> location-sites first :name)]])
                                                         (when display-turnover
                                                           [:div.minichart
                                                            [:div.minibar.metric-1
@@ -670,6 +677,17 @@
                                      (get-in @(get-app-state-atom) [:map :controls :initial-bounds])))
                     :class "btn btn-default"}
 
+   :reset-all {:content (constantly [:h1.logo "Cambridge"])
+               :action (fn [e]
+                         (js/console.log "reset all")
+                         (.preventDefault e)
+
+                         (reset! (get-app-state-atom)
+                                 (-> @(get-app-state-atom)
+                                     (assoc-in [:map :controls :bounds]
+                                               (get-in @(get-app-state-atom) [:map :controls :initial-bounds]))
+                                     (assoc-in [:dynamic-filter-spec]
+                                               (filters/reset-filter (get-in @(get-app-state-atom) [:dynamic-filter-spec]))))))}
    })
 
 
@@ -718,6 +736,11 @@
     :target "reset-map-view-button-component"
     :paths {:action-button [:reset-map-view]}}
 
+   {:name :reset-all
+    :f action-link/action-link-component
+    :target "reset-all-component"
+    :paths {:action-link [:reset-all]}}
+
    {:name :display-minichart-turnover
     :f (partial checkbox-boolean/checkbox-boolean-component :display-turnover)
     :target "display-minichart-turnover-component"
@@ -726,6 +749,11 @@
    {:name :display-minichart-employee-count
     :f (partial checkbox-boolean/checkbox-boolean-component :display-employee-count)
     :target "display-minichart-employee-count-component"
+    :path [:map :controls :location :marker-opts]}
+
+   {:name :display-principal-name
+    :f (partial checkbox-boolean/checkbox-boolean-component :display-principal-name)
+    :target "display-principal-name-component"
     :path [:map :controls :location :marker-opts]}
 
    ;; {:name :region-investment-histogram
