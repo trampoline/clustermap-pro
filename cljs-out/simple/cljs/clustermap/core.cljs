@@ -424,7 +424,7 @@
                     :geohash-aggs {:query {:index-name "companies"
                                            :index-type "company"
                                            :geo-point-field "!location"}
-                                   :show-at-zoom-fn (constantly true) ;; (fn [z] (not (< 7 z 10)))
+                                   :show-at-zoom-fn (fn [z] (> z 5))
                                    :precision-fn (fn [z] (- (/ z 2) 0.0))
                                    :colorchooser-factory-fn (fn [geohash-aggs]
                                                               (let [chooser-fn (num/table-chooser-fn
@@ -436,39 +436,39 @@
                                                      [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
                                    :geohash-agg-data nil}
 
-                    ;; :geotag-aggs {:query {:index-name "companies"
-                    ;;                       :index-type "company"
-                    ;;                       :nested-path "?tags"
-                    ;;                       :nested-attr "tag"
-                    ;;                       :nested-filter {:term {:type "uk_boroughs"}}
-                    ;;                       :stats-attr "?count"}
-                    ;;               :tag-type "uk_boroughs"
-                    ;;               :show-at-zoom-fn (fn [z] (< 7 z 10))
-                    ;;               :colorchooser-factory-fn (fn [geotag-aggs]
-                    ;;                                         (let [chooser-fn (num/table-chooser-fn
-                    ;;                                                           [0.7 0.9]
-                    ;;                                                           (map :nested_attr_doc_count geotag-aggs))]
-                    ;;                                           (fn [geotag-agg]
-                    ;;                                             (chooser-fn (:nested_attr_doc_count geotag-agg)))))
+                    :geotag-aggs {:query {:index-name "companies"
+                                          :index-type "company"
+                                          :nested-path "?tags"
+                                          :nested-attr "tag"
+                                          :nested-filter {:term {:type "cambridge_ahead"}}
+                                          :stats-attr "?count"}
+                                  :tag-type "cambridge_ahead"
+                                  :show-at-zoom-fn (fn [z] (<= z 5))
+                                  :colorchooser-factory-fn (fn [geotag-aggs]
+                                                            (let [chooser-fn (num/table-chooser-fn
+                                                                              [0.7 0.9]
+                                                                              (map :nested_attr_doc_count geotag-aggs))]
+                                                              (fn [geotag-agg]
+                                                                (chooser-fn (:nested_attr_doc_count geotag-agg)))))
 
-                    ;;               :icon-render-fn (fn [tag stats]
-                    ;;                                 [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
-                    ;;               :click-fn (fn [geotag geotag-agg e]
-                    ;;                           ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
+                                  :icon-render-fn (fn [tag stats]
+                                                    [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
+                                  :click-fn (fn [geotag geotag-agg e]
+                                              ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
 
-                    ;;                           (let [boundaryline-id (:tag geotag)
-                    ;;                                 ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
-                    ;;                             (go
-                    ;;                               (let [bl (<! ch)
-                    ;;                                     envelope (aget bl "envelope")
-                    ;;                                     bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
-                    ;;                                 (when bounds
-                    ;;                                   (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
+                                              (let [boundaryline-id (:tag geotag)
+                                                    ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
+                                                (go
+                                                  (let [bl (<! ch)
+                                                        envelope (aget bl "envelope")
+                                                        bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
+                                                    (when bounds
+                                                      (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
 
-                    ;;                                   (make-boundaryline-selection boundaryline-id))))))
+                                                      (make-boundaryline-selection boundaryline-id))))))
 
-                    ;;               :geotag-data nil
-                    ;;               :geotag-agg-data nil}
+                                  :geotag-data nil
+                                  :geotag-agg-data nil}
 
                     }
          :data nil}
