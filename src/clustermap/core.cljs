@@ -149,16 +149,38 @@
    :dynamic-filter-spec {:id :coll
 
                          ;; dynamic components
-                         :components {:boundaryline nil}
+                         :components {:boundaryline nil,
+                                      :sector {:bool
+                                               {:should
+                                                [{:nested
+                                                  {:path "?tags",
+                                                   :filter {:bool
+                                                            {:must [{:term {"type" "broad_12_sectors"}}
+                                                                    {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}}
 
                          ;; dynamic component descriptions
-                         :component-descrs {}
+                         :component-descrs {:sector "Sector: Knowledge Intensive Professional Services"}
 
                          ;; dynamic component url descriptions
-                         :url-components {}
+                         :url-components {:sector "knowledge_intensive_professional_services"}
 
                          ;; filters to compose with components
                          :base-filters {:all nil}
+
+                         ;; horrible to be setting a default filter like this TODO
+                         ;; make filter spec simple (in terms of filter-component/keys),
+                         ;; and convert to ES filters later
+                         :composed {:all
+                                    {:bool
+                                     {:must
+                                      [{:bool
+                                        {:should
+                                         [{:nested
+                                           {:path "?tags",
+                                            :filter
+                                            {:bool
+                                             {:must [{:term {"type" "broad_12_sectors"}}
+                                                     {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}]}}}
 
                          ;; specifications for dynamic components
                          :component-specs [
@@ -270,7 +292,7 @@
                                            ]
 
                          ;; base-filters AND combined with dynamic components
-                         :composed {}}
+                         }
 
    :dynamic-filter-description-components [:boundaryline :age :total-funding :sector :ds :hub :latest-turnover :highgrowth]
 
@@ -322,8 +344,9 @@
          ;; :boundaryline-collections [[0 "nuts_0"] [4 "nuts_1"] [6 "nuts_2"] [7 "nuts_3"] [8 "uk_boroughs"] [10 "uk_wards"]]
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "uk_boroughs"] [11 "uk_wards"]]
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
-         :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
-         :controls {:initial-bounds [[51.95 -0.76] [52.76 1.07]]
+         ;; :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
+         :boundaryline-collections [[0 "cambridge_ahead"]]
+         :controls {:initial-bounds  [[51.82 -0.50] [52.58 0.72]]
                     :map-options {:zoomControl true
                                   :dragging true
                                   :touchZoom true
@@ -393,11 +416,13 @@
                                    :scale :auto
                                    :variable :boundaryline_id_doc_count}
 
+                    :boundaryline-fill-opacity 0.05
+
                     :geohash-aggs {:query {:index-name "companies"
                                            :index-type "company"
                                            :geo-point-field "!location"}
-                                   :show-at-zoom-fn (fn [z] (not (< 7 z 10)))
-                                   :precision-fn (fn [z] (- (/ z 2) 0.5))
+                                   :show-at-zoom-fn (constantly true) ;; (fn [z] (not (< 7 z 10)))
+                                   :precision-fn (fn [z] (- (/ z 2) 0.0))
                                    :colorchooser-factory-fn (fn [geohash-aggs]
                                                               (let [chooser-fn (num/table-chooser-fn
                                                                                 [0.7 0.9]
@@ -408,39 +433,39 @@
                                                      [:p (num/compact (:geohash-grid_doc_count geohash-agg) {:sf 2})])
                                    :geohash-agg-data nil}
 
-                    :geotag-aggs {:query {:index-name "companies"
-                                          :index-type "company"
-                                          :nested-path "?tags"
-                                          :nested-attr "tag"
-                                          :nested-filter {:term {:type "uk_boroughs"}}
-                                          :stats-attr "?count"}
-                                  :tag-type "uk_boroughs"
-                                  :show-at-zoom-fn (fn [z] (< 7 z 10))
-                                  :colorchooser-factory-fn (fn [geotag-aggs]
-                                                            (let [chooser-fn (num/table-chooser-fn
-                                                                              [0.7 0.9]
-                                                                              (map :nested_attr_doc_count geotag-aggs))]
-                                                              (fn [geotag-agg]
-                                                                (chooser-fn (:nested_attr_doc_count geotag-agg)))))
+                    ;; :geotag-aggs {:query {:index-name "companies"
+                    ;;                       :index-type "company"
+                    ;;                       :nested-path "?tags"
+                    ;;                       :nested-attr "tag"
+                    ;;                       :nested-filter {:term {:type "uk_boroughs"}}
+                    ;;                       :stats-attr "?count"}
+                    ;;               :tag-type "uk_boroughs"
+                    ;;               :show-at-zoom-fn (fn [z] (< 7 z 10))
+                    ;;               :colorchooser-factory-fn (fn [geotag-aggs]
+                    ;;                                         (let [chooser-fn (num/table-chooser-fn
+                    ;;                                                           [0.7 0.9]
+                    ;;                                                           (map :nested_attr_doc_count geotag-aggs))]
+                    ;;                                           (fn [geotag-agg]
+                    ;;                                             (chooser-fn (:nested_attr_doc_count geotag-agg)))))
 
-                                  :icon-render-fn (fn [tag stats]
-                                                    [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
-                                  :click-fn (fn [geotag geotag-agg e]
-                                              ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
+                    ;;               :icon-render-fn (fn [tag stats]
+                    ;;                                 [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
+                    ;;               :click-fn (fn [geotag geotag-agg e]
+                    ;;                           ;; (.log js/console (clj->js [(:description geotag) geotag geotag-agg e]))
 
-                                              (let [boundaryline-id (:tag geotag)
-                                                    ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
-                                                (go
-                                                  (let [bl (<! ch)
-                                                        envelope (aget bl "envelope")
-                                                        bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
-                                                    (when bounds
-                                                      (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
+                    ;;                           (let [boundaryline-id (:tag geotag)
+                    ;;                                 ch (bl/get-or-fetch-boundaryline (get-app-state-atom) :boundarylines boundaryline-id)]
+                    ;;                             (go
+                    ;;                               (let [bl (<! ch)
+                    ;;                                     envelope (aget bl "envelope")
+                    ;;                                     bounds (js->clj (map/postgis-envelope->latlngbounds envelope))]
+                    ;;                                 (when bounds
+                    ;;                                   (swap! (app/get-state @app-instance) assoc-in [:map :controls :bounds] bounds)
 
-                                                      (make-boundaryline-selection boundaryline-id))))))
+                    ;;                                   (make-boundaryline-selection boundaryline-id))))))
 
-                                  :geotag-data nil
-                                  :geotag-agg-data nil}
+                    ;;               :geotag-data nil
+                    ;;               :geotag-agg-data nil}
 
                     }
          :data nil}
@@ -721,10 +746,10 @@
     :paths {:map-state [:map]
             :filter [:dynamic-filter-spec :composed :all]}}
 
-   {:name :color-scale
-    :f color-scale/color-scale-component
-    :target "color-scale-component"
-    :path [:map :controls :threshold-colors]}
+   ;; {:name :color-scale
+   ;;  :f color-scale/color-scale-component
+   ;;  :target "color-scale-component"
+   ;;  :path [:map :controls :threshold-colors]}
 
    {:name :company-close
     :f nav-button/nav-button-component
