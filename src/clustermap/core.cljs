@@ -149,20 +149,22 @@
    :dynamic-filter-spec {:id :coll
 
                          ;; dynamic components
-                         :components {:boundaryline nil,
-                                      :sector {:bool
-                                               {:should
-                                                [{:nested
-                                                  {:path "?tags",
-                                                   :filter {:bool
-                                                            {:must [{:term {"type" "broad_12_sectors"}}
-                                                                    {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}}
+                         :components {}
+
+                         ;; {:boundaryline nil,
+                         ;;              :sector {:bool
+                         ;;                       {:should
+                         ;;                        [{:nested
+                         ;;                          {:path "?tags",
+                         ;;                           :filter {:bool
+                         ;;                                    {:must [{:term {"type" "broad_12_sectors"}}
+                         ;;                                            {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}}
 
                          ;; dynamic component descriptions
-                         :component-descrs {:sector "Sector: Knowledge Intensive Professional Services"}
+                         :component-descrs {} ;;{:sector "Sector: Knowledge Intensive Professional Services"}
 
                          ;; dynamic component url descriptions
-                         :url-components {:sector "knowledge_intensive_professional_services"}
+                         :url-components {} ;;{:sector "knowledge_intensive_professional_services"}
 
                          ;; filters to compose with components
                          :base-filters {:all nil}
@@ -170,17 +172,18 @@
                          ;; horrible to be setting a default filter like this TODO
                          ;; make filter spec simple (in terms of filter-component/keys),
                          ;; and convert to ES filters later
-                         :composed {:all
-                                    {:bool
-                                     {:must
-                                      [{:bool
-                                        {:should
-                                         [{:nested
-                                           {:path "?tags",
-                                            :filter
-                                            {:bool
-                                             {:must [{:term {"type" "broad_12_sectors"}}
-                                                     {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}]}}}
+                         :composed {}
+                         ;; {:all
+                         ;;            {:bool
+                         ;;             {:must
+                         ;;              [{:bool
+                         ;;                {:should
+                         ;;                 [{:nested
+                         ;;                   {:path "?tags",
+                         ;;                    :filter
+                         ;;                    {:bool
+                         ;;                     {:must [{:term {"type" "broad_12_sectors"}}
+                         ;;                             {:term {"tag" "knowledge_intensive_professional_services"}}]}}}}]}}]}}}
 
                          ;; specifications for dynamic components
                          :component-specs [
