@@ -445,11 +445,11 @@
                                   :tag-type "cambridge_ahead"
                                   :show-at-zoom-fn (fn [z] (<= z 5))
                                   :colorchooser-factory-fn (fn [geotag-aggs]
-                                                            (let [chooser-fn (num/table-chooser-fn
-                                                                              [0.7 0.9]
-                                                                              (map :nested_attr_doc_count geotag-aggs))]
-                                                              (fn [geotag-agg]
-                                                                (chooser-fn (:nested_attr_doc_count geotag-agg)))))
+                                                             (let [chooser-fn (num/table-chooser-fn
+                                                                               [0.7 0.9]
+                                                                               (map :nested_attr_doc_count geotag-aggs))]
+                                                               (fn [geotag-agg]
+                                                                 (chooser-fn (:nested_attr_doc_count geotag-agg)))))
 
                                   :icon-render-fn (fn [tag stats]
                                                     [:p (num/compact (:nested_attr_doc_count stats) {:sf 2})])
