@@ -3585,6 +3585,20 @@ h1.logo {
 .marker-info .metric-2 {
   background-color: #22828a;
 }
+.minichart-key::after {
+  content: " ";
+  display: inline-block;
+  height: 3px;
+  margin-bottom: 3px;
+  margin-right: 3px;
+  width: 10px;
+}
+.minichart-key.metric-1::after {
+  background-color: #a50f15;
+}
+.minichart-key.metric-2::after {
+  background-color: #22828a;
+}
 .marker-cluster-small {
   background-color: rgba(35, 129, 190, 0.6);
 }

@@ -7,7 +7,7 @@ goog.require('cljs_time.coerce');
 goog.require('cljs_time.coerce');
 goog.require('cljs_time.format');
 goog.require('cljs_time.format');
-clustermap.formats.time.get_year = (function get_year(t){var G__27362 = t;var G__27362__$1 = (((G__27362 == null))?null:(new Date(G__27362)));var G__27362__$2 = (((G__27362__$1 == null))?null:G__27362__$1.getYear());var G__27362__$3 = (((G__27362__$2 == null))?null:(G__27362__$2 + (1900)));return G__27362__$3;
+clustermap.formats.time.get_year = (function get_year(t){var G__27327 = t;var G__27327__$1 = (((G__27327 == null))?null:(new Date(G__27327)));var G__27327__$2 = (((G__27327__$1 == null))?null:G__27327__$1.getYear());var G__27327__$3 = (((G__27327__$2 == null))?null:(G__27327__$2 + (1900)));return G__27327__$3;
 });
 clustermap.formats.time.date_formatter = cljs_time.format.formatters.call(null,new cljs.core.Keyword(null,"date","date",-1463434462));
 clustermap.formats.time.coerce_from_string = (function coerce_from_string(s){if(typeof s === 'string')
@@ -16,7 +16,7 @@ clustermap.formats.time.coerce_from_string = (function coerce_from_string(s){if(
 {return s;
 }
 });
-clustermap.formats.time.format_date = (function format_date(t){var G__27364 = t;var G__27364__$1 = (((G__27364 == null))?null:clustermap.formats.time.coerce_from_string.call(null,G__27364));var G__27364__$2 = (((G__27364__$1 == null))?null:cljs_time.format.unparse.call(null,clustermap.formats.time.date_formatter,G__27364__$1));return G__27364__$2;
+clustermap.formats.time.format_date = (function format_date(t){var G__27329 = t;var G__27329__$1 = (((G__27329 == null))?null:clustermap.formats.time.coerce_from_string.call(null,G__27329));var G__27329__$2 = (((G__27329__$1 == null))?null:cljs_time.format.unparse.call(null,clustermap.formats.time.date_formatter,G__27329__$1));return G__27329__$2;
 });
 clustermap.formats.time.now = (function now(){return cljs_time.core.now.call(null);
 });
