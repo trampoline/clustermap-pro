@@ -415,7 +415,7 @@
                                        :variable "!latest_employee_count"
                                        ;; :scale-attr "population"
                                        }
-                    :colorchooser {:scheme [:OrRd :6]
+                    :colorchooser {:scheme ["#990000"]
                                    :scale :auto
                                    :variable :boundaryline_id_doc_count}
 
