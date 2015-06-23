@@ -53,16 +53,23 @@
   [scheme thresholds value]
   (let [scheme-thresholds (map vector thresholds scheme)
         chosen (->> scheme-thresholds
-                    (filter (fn [[t i]] (< value t)))
+                    (filter (fn [[t i]] (<= value t)))
                     first
                     last)]
     (or chosen
         (last scheme))))
 
+(defn choose-color-scheme
+  [color-scheme-spec]
+  (let [[k & rest] color-scheme-spec]
+    (if (keyword? k)
+      (get-in colorbrewer/schemes (map keyword color-scheme-spec))
+      color-scheme-spec)))
+
 (defn choose
   "return a map of {key-value => colours}"
   [color-scheme-spec scale key variable data]
-  (let [color-scheme (get-in colorbrewer/schemes (map keyword color-scheme-spec))
+  (let [color-scheme (choose-color-scheme color-scheme-spec)
         col-count (count color-scheme)
         values (->> (picker/pick-variable variable data) (filter identity))
         min-value (apply min values)

@@ -3611,14 +3611,14 @@ h1.logo {
 }
 .marker-cluster-medium div {
   color: white;
-  background-color: rgba(0, 110, 180, 0.6);
+  background-color: rgba(6, 88, 158, 0.6);
 }
 .marker-cluster-large {
   background-color: rgba(35, 129, 190, 0.6);
 }
 .marker-cluster-large div {
   color: white;
-  background-color: rgba(6, 88, 158, 0.6);
+  background-color: rgba(0, 53, 99, 0.6);
 }
 /* IE 6-8 fallback colors */
 .leaflet-oldie .marker-cluster-small {
