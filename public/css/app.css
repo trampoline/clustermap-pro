@@ -1265,7 +1265,7 @@ th {
   display: none;
 }
 .table-filtered .bar-chart {
-  background-color: #94c2c6;
+  background-color: #95d1c7;
 }
 .table-filtered .active-row th.title {
   color: #333333;
@@ -1274,7 +1274,7 @@ th {
   display: inline;
 }
 .table-filtered .active-row .bar-chart {
-  background-color: #22828a;
+  background-color: #1c9d86;
 }
 .table-stats th.title {
   font-weight: normal;
@@ -2940,8 +2940,7 @@ h1.logo {
   height: 50px;
   width: 176px;
   margin: 0 auto;
-  background: url('../img/logo-cambridge.png') 50% 50% no-repeat;
-  background-image: url('../img/logo-cambridge.svg'), none;
+  background: url('../img/logo-medcity.png') 50% 50% no-repeat;
 }
 .company-search {
   border-top: 1px solid #2d2d2d;
@@ -3066,7 +3065,7 @@ h1.logo {
 }
 .intro {
   height: 388px;
-  background: #22828a url('../img/banner-cambridge.jpg') 50% 100% no-repeat;
+  background: #1c9d86 url('../img/banner-medcity.jpg') 50% 100% no-repeat;
   background-size: cover;
   color: #fff;
   vertical-align: middle;
@@ -3385,7 +3384,7 @@ h1.logo {
   float: left;
   width: 0%;
   height: 100%;
-  background-color: #22828a;
+  background-color: #1c9d86;
   -webkit-transition: width 0.6s ease;
   -o-transition: width 0.6s ease;
   transition: width 0.6s ease;
@@ -3580,10 +3579,10 @@ h1.logo {
   opacity: 0.8;
 }
 .marker-info .metric-1 {
-  background-color: #a50f15;
+  background-color: #d01d4c;
 }
 .marker-info .metric-2 {
-  background-color: #22828a;
+  background-color: #1c9d86;
 }
 .minichart-key::after {
   content: " ";
@@ -3594,31 +3593,31 @@ h1.logo {
   width: 10px;
 }
 .minichart-key.metric-1::after {
-  background-color: #a50f15;
+  background-color: #d01d4c;
 }
 .minichart-key.metric-2::after {
-  background-color: #22828a;
+  background-color: #1c9d86;
 }
 .marker-cluster-small {
-  background-color: rgba(35, 129, 190, 0.6);
+  background-color: rgba(65, 174, 118, 0.5);
 }
 .marker-cluster-small div {
   color: white;
-  background-color: rgba(35, 129, 190, 0.6);
+  background-color: rgba(65, 174, 118, 0.5);
 }
 .marker-cluster-medium {
-  background-color: rgba(35, 129, 190, 0.6);
+  background-color: rgba(65, 174, 118, 0.5);
 }
 .marker-cluster-medium div {
   color: white;
-  background-color: rgba(6, 88, 158, 0.6);
+  background-color: rgba(0, 109, 44, 0.55);
 }
 .marker-cluster-large {
-  background-color: rgba(35, 129, 190, 0.6);
+  background-color: rgba(65, 174, 118, 0.5);
 }
 .marker-cluster-large div {
   color: white;
-  background-color: rgba(0, 53, 99, 0.6);
+  background-color: rgba(0, 68, 27, 0.6);
 }
 /* IE 6-8 fallback colors */
 .leaflet-oldie .marker-cluster-small {
