@@ -258,21 +258,11 @@
                                             :sorted false
                                             :visible true
                                             :controls true
-                                            :tag-type "broad_12_sectors"
+                                            :tag-type "l4_sector"
                                             :tags [
-                                                   {:value "construction_and_utilities" :label "Construction and utilities"}
-                                                   {:value "education_arts_charities_social_care" :label "Education, arts, charities, social care"}
-                                                   {:value "information_technology_and_telecoms" :label "Information Technology and Telecoms"}
-                                                   {:value "knowledge_intensive_professional_services" :label "Knowledge Intensive Professional Services"}
-                                                   {:value "life_science_and_healthcare" :label "Life Science and Healthcare"}
-                                                   {:value "manufacturing" :label "Manufacturing"}
-                                                   {:value "other_business_services" :label "Other Business Services"}
-                                                   {:value "personal_services" :label "Personal services"}
-                                                   {:value "primary" :label "Primary"}
-                                                   {:value "property_and_finance" :label "Property and finance"}
-                                                   {:value "transport_and_travel" :label "Transport and travel"}
-                                                   {:value "wholesale_and_retail_distribution" :label "Wholesale and retail distribution"}
-                                                   {:value "not_known" :label "Unknown"}
+                                                   {:value "pharm_manf" :label "Pharmaceutical manufacture"}
+                                                   {:value "med_opt_equip_manf" :label "Medical (exc. pharmaceutical) & optical equipment manufacture"}
+                                                   {:value "biotech_randd" :label "Biotechnology research and development"}
                                                    ]}
 
                                            {:id :highgrowth
@@ -348,8 +338,8 @@
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "uk_boroughs"] [11 "uk_wards"]]
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
          ;; :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
-         :boundaryline-collections [[0 "cambridge_ahead"][10 "uk_wards"]]
-         :controls {:initial-bounds  [[51.82 -0.50] [52.58 0.72]]
+         :boundaryline-collections [[0 "uk_regions"][8 "uk_boroughs"][10 "uk_wards"]]
+         :controls {:initial-bounds  [[50.56230444080573 -1.9775390625][53.02139221293762 1.8182373046875]]
                     :map-options {:zoomControl true
                                   :dragging true
                                   :touchZoom true
@@ -424,7 +414,7 @@
                     :geohash-aggs {:query {:index-name "companies"
                                            :index-type "company"
                                            :geo-point-field "!location"}
-                                   :show-at-zoom-fn (fn [z] (> z 5))
+                                   :show-at-zoom-fn (fn [z] (> z 7))
                                    :precision-fn (fn [z] (- (/ z 2) 0.0))
                                    :colorchooser-factory-fn (fn [geohash-aggs]
                                                               (let [chooser-fn (num/table-chooser-fn
@@ -440,10 +430,10 @@
                                           :index-type "company"
                                           :nested-path "?tags"
                                           :nested-attr "tag"
-                                          :nested-filter {:term {:type "cambridge_ahead"}}
+                                          :nested-filter {:term {:type "uk_regions"}}
                                           :stats-attr "?count"}
-                                  :tag-type "cambridge_ahead"
-                                  :show-at-zoom-fn (fn [z] (<= z 5))
+                                  :tag-type "uk_regions"
+                                  :show-at-zoom-fn (fn [z] (<= z 7))
                                   :colorchooser-factory-fn (fn [geotag-aggs]
                                                              (let [chooser-fn (num/table-chooser-fn
                                                                                [0.7 0.9]
@@ -591,7 +581,7 @@
                               :index-type "company"
                               :nested-path "?tags"
                               :nested-attr "tag"
-                              :nested-filter {:term {:type "broad_12_sectors"}}
+                              :nested-filter {:term {:type "l4_sector"}}
                               :stats-attr "!latest_turnover"}
                       :metrics [{:metric :sum
                                  :title "-"
@@ -599,7 +589,7 @@
                       :bar-width 20
                       :bar-color "#28828a"
 
-                      :tag-type "broad_12_sectors"
+                      :tag-type "l4_sector"
                       :tag-data nil
                       :tag-agg-data nil}
 
@@ -705,7 +695,7 @@
                                      (get-in @(get-app-state-atom) [:map :controls :initial-bounds])))
                     :class "btn btn-default"}
 
-   :reset-all {:content (constantly [:h1.logo "Cambridge"])
+   :reset-all {:content (constantly [:h1.logo "MedCity"])
                :action (fn [e]
                          (js/console.log "reset all")
                          (.preventDefault e)
