@@ -598,14 +598,14 @@
 
                               :color "#28828a"
 
-                              :rows [{:key "2013" :label "2013"}]
+                              :rows [{:key "latest" :label "2013/2014"}]
                               :row-path [:accounts :row]
                               :row-aggs {:accounts
                                          {:nested {:path "?accounts"}
 
                                           :aggs
-                                          {:row {:range {:field "accounts_date"
-                                                         :ranges [{:key "2013" :from "2013-01-01" :to "2014-01-01"}]}}}} }
+                                          {:row {:range {:field "rank"
+                                                         :ranges [{:key "latest" :from 1 :to 2}]}}}} }
 
                               :cols [{:key "lt50k"  :label "Less than £50k"}
                                      {:key "50k"  :label "£50k - £100k"}
@@ -640,14 +640,14 @@
 
                                  :color "#28828a"
 
-                                 :rows [{:key "2013" :label "2013"}]
+                                 :rows [{:key "latest" :label "2013/2014"}]
                                  :row-path [:accounts :row]
                                  :row-aggs {:accounts
                                             {:nested {:path "?accounts"}
 
                                              :aggs
-                                             {:row {:range {:field "accounts_date"
-                                                            :ranges [{:key "2013" :from "2013-01-01" :to "2014-01-01"}]}}}} }
+                                             {:row {:range {:field "rank"
+                                                            :ranges [{:key "latest" :from 1 :to 2}]}}}} }
 
                                  :cols [{:key "l"    :label "1-4"}
                                         {:key "5"    :label "5-9"}
@@ -661,7 +661,7 @@
                                  :col-path [:col]
                                  :col-aggs {:col
                                             {:range {:field "employee_count"
-                                                     :ranges [{:key "l"    :from 0    :to 5 }
+                                                     :ranges [{:key "l"    :from 1    :to 5 }
                                                               {:key "5"    :from 5    :to 10 }
                                                               {:key "10"   :from 10   :to 20 }
                                                               {:key "20"   :from 20   :to 50 }
