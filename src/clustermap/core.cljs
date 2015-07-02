@@ -199,18 +199,39 @@
                                                    {:value "osbl_european_region_region__london_euro_region" :label "London"}
                                                    {:value "osbl_european_region_region__south_east_euro_region" :label "South East"}]}
 
-                                           {:id :sector
-                                            :type :tag-checkboxes
-                                            :label "Sector"
-                                            :sorted false
+                                           {:id :age
+                                            :type :checkboxes
+                                            :label "Age"
+                                            :visible true
+                                            :options [;; {:value "any" :filter nil :label "Any" :omit-description true}
+                                                      {:value "new" :label "< 5 years" :filter {:range {"!formation_date" {:gte "2009-01-01"}}}}
+                                                      {:value "old" :label ">= 5 years" :filter {:range {"!formation_date" {:lt "2009-01-01"}}}}]}
+
+                                           {:id :reg-year
+                                            :type :checkboxes
+                                            :label "Reg. Year"
                                             :visible true
                                             :controls true
-                                            :tag-type "l4_sector"
-                                            :tags [
-                                                   {:value "pharm_manf" :label "Pharmaceutical manufacture"}
-                                                   {:value "med_opt_equip_manf" :label "Medical (exc. pharmaceutical) & optical equipment manufacture"}
-                                                   {:value "biotech_randd" :label "Biotechnology research and development"}
-                                                   ]}
+                                            :options [;; {:id "any" :filter nil :label "Any"}
+                                                      {:value "2010" :label "2010" :filter {:range {"!formation_date" {:gte "2010-01-01" :lt "2011-01-01"}}}}
+                                                      {:value "2011" :label "2011" :filter {:range {"!formation_date" {:gte "2011-01-01" :lt "2012-01-01"}}}}
+                                                      {:value "2012" :label "2012" :filter {:range {"!formation_date" {:gte "2012-01-01" :lt "2013-01-01"}}}}
+                                                      {:value "2013" :label "2013" :filter {:range {"!formation_date" {:gte "2013-01-01" :lt "2014-01-01"}}}}
+                                                      ]}
+
+                                           {:id :latest-turnover
+                                            :type :checkboxes
+                                            :label "Turnover"
+                                            :visible true
+                                            :controls true
+                                            :options [;; {:value "any" :label "Any" :filter nil}
+                                                      {:value "min" :label "< £1m" :filter {:range {"!latest_turnover" {:lt 1000000}}}}
+                                                      {:value "low" :label "£1m - £5m" :filter {:range {"!latest_turnover" {:gte 1000000 :lt 5000000}}}}
+                                                      {:value "lowmid" :label "£5m - £20m" :filter {:range {"!latest_turnover" {:gte 5000000 :lt 20000000}}}}
+                                                      {:value "highmid" :label "£20m - £100m" :filter {:range {"!latest_turnover" {:gte 20000000 :lt 100000000}}}}
+                                                      {:value "high" :label "> £100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
+                                                      ]}
+
 
                                            {:id :highgrowth
                                             :type :checkboxes
@@ -218,6 +239,51 @@
                                             :visible true
                                             :options [{:value "latest" :label "High growth companies" :filter scaleup-filter}
                                                       ]}
+
+                                           {:id :nontoxic-l3-sector
+                                            :type :tag-checkboxes
+                                            :label "L3 Sector"
+                                            :sorted true
+                                            :visible true
+                                            :controls true
+                                            :tag-type "nontoxic_sector"
+                                            :tags [;; {:value "" :label "Any" :omit-description true}
+                                                   {:value "digi_tech" :label "Digital Technologies"}
+                                                   {:value "lifesci_health" :label "Life Sciences & Healthcare"}
+                                                   {:value "pub_broad" :label "Publishing & Broadcasting"}
+                                                   {:value "other_scitechmanf" :label "Other scientific/technological manufacture"}
+                                                   {:value "other_scitech_serv" :label "Other scientific/technological services"}]}
+
+                                           {:id :l4-sector
+                                            :type :tag-checkboxes
+                                            :label "L4 Sector"
+                                            :sorted true
+                                            :visible true
+                                            :controls true
+                                            :tag-type "l4_sector"
+                                            :tags [;; {:value "" :label "Any" :omit-description true}
+                                                   {:value "comp_elec_manf" :label "Computer & Electronic manufacturing (inc. peripherals)"}
+                                                   {:value "dig_comp_serv" :label "Digital & Computer services"}
+                                                   {:value "med_opt_equip_manf" :label "Medical (exc. pharmaceutical) & optical equipment manufacture"}
+                                                   {:value "pharm_manf" :label "Pharmaceutical manufacture"}
+                                                   {:value "biotech_randd" :label "Biotechnology research and development"}
+                                                   {:value "healthcare_serv" :label "Healthcare services (including veterinary)"}
+                                                   {:value "comm_equip_manf" :label "Communication Equipment manufacture"}
+                                                   {:value "pub_mktg_graph_des" :label "Publishing, Marketing & Graphic Design"}
+                                                   {:value "aud_vis_broad" :label "Audio-visual broadcasting"}
+                                                   {:value "telecomm_serv" :label "Telecommunication services by wire, wireless and satellite (inc. news agency activities)"}
+                                                   {:value "manf_rep_air_space" :label "Manufacture and repair of air and spacecraft"}
+                                                   {:value "def_tech" :label "Defence technologies (weapons, ammunition, explosives & military vehicles)"}
+                                                   {:value "auto_manf" :label "Automotive manufacture (inc. vehicles, trailers, railroad, shipbuilding)"}
+                                                   {:value "chem_manf" :label "Chemical & Chemical Product manufacturing (exc. Pharmaceuticals)"}
+                                                   {:value "elec_mach_manf" :label "Electrical Machinery manufacture"}
+                                                   {:value "non_elec_mach_manf" :label "Non-electrical Machinery manufacture"}
+                                                   {:value "precision_eng" :label "Precision engineering (watches, clocks, jewellery, non-electronic instruments & appliances)"}
+                                                   {:value "aero_transp" :label "Aerospace transport"}
+                                                   {:value "arch_eng_surv" :label "Architecture, Engineering & Quantity Surveying"}
+                                                   {:value "higher_ed" :label "Higher education (college, university and post-graduate)"}
+                                                   {:value "humanitities_randd" :label "Research & Development on humanities, natural sciences, social sciences and engineering"}]}
+
                                            ]
 
                          ;; base-filters AND combined with dynamic components
@@ -274,8 +340,8 @@
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "uk_boroughs"] [11 "uk_wards"]]
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
          ;; :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
-         :boundaryline-collections [[0 "uk_regions"][9 "uk_boroughs"][11 "uk_wards"]]
-         :controls {:initial-bounds  [[50.56230444080573 -1.9775390625][53.02139221293762 1.8182373046875]]
+         :boundaryline-collections [[0 "uk_counties"][7 "uk_boroughs"][12 "uk_wards"]]
+         :controls {:initial-bounds  [[51.23956626148356 -0.59600830078125][51.767839887322154 0.37078857421875]]
                     :map-options {:zoomControl true
                                   :dragging true
                                   :touchZoom true
@@ -344,17 +410,17 @@
                                        :variable "!latest_employee_count"
                                        ;; :scale-attr "population"
                                        }
-                    :colorchooser {:scheme ["#990000"]
+                    :colorchooser {:scheme [:RdPu :6]
                                    :scale :auto
-                                   :variable :boundaryline_id_doc_count}
+                                   :variable :sum}
 
-                    :boundaryline-fill-opacity 0.05
+                    :boundaryline-fill-opacity 0.4
 
                     :geohash-aggs {:query {:index-name "companies"
                                            :index-type "company"
                                            :geo-point-field "!location"}
                                    :show-at-zoom-fn (fn [z] (>= z 9))
-                                   :precision-fn (fn [z] (- (/ z 2) 0.0))
+                                   :precision-fn (fn [z] (- (/ z 2) 0.5))
                                    :colorchooser-factory-fn (fn [geohash-aggs]
                                                               (let [chooser-fn (num/table-chooser-fn
                                                                                 [0.7 0.9]
@@ -678,10 +744,129 @@
     :paths {:map-state [:map]
             :filter [:dynamic-filter-spec :composed :all]}}
 
-   ;; {:name :color-scale
-   ;;  :f color-scale/color-scale-component
-   ;;  :target "color-scale-component"
-   ;;  :path [:map :controls :threshold-colors]}
+   {:name :color-scale
+    :f color-scale/color-scale-component
+    :target "color-scale-component"
+    :path [:map :controls :threshold-colors]}
+
+   {:name :map-shading-var-select
+    :f (partial
+        select-chooser/select-chooser-component
+        "Variable"
+        [{:value "!latest_employee_count" :label "Employee count"}
+         {:value "!latest_employee_count_delta" :label "Employee change"}
+         {:value "!latest_turnover" :label "Turnover"}
+         {:value "!latest_turnover_delta" :label "Turnover change"}
+         ;; {:value "?counter" :label "Company count"}
+         ]
+        (fn
+          ([cursor] (get-in cursor [:variable]))
+          ([cursor record]
+           (om/update! cursor [:variable] (:value record)))))
+    :target "map-shading-var-select-component"
+    :path [:map :controls :boundaryline-agg]}
+
+   {:name :map-shading-stat-select-component
+    :f (partial
+        select-chooser/select-chooser-component
+        "Statistic"
+        [{:value "sum" :label "Sum"}
+         {:value "max" :label "Maximum"}
+         {:value "avg" :label "Mean"}
+         {:value "boundaryline_id_doc_count" :label "Count"}]
+        (fn
+          ([cursor] (get-in cursor [:variable]))
+          ([cursor record]
+           (om/update! cursor [:variable] (:value record)))))
+    :target "map-shading-stat-select-component"
+    :path [:map :controls :colorchooser]}
+
+   {:name :map-shading-scale-select-component
+    :f (partial
+        select-chooser/select-chooser-component
+        "Scale type"
+        [{:value "auto-no-outliers" :label "Auto without outliers"}
+         {:value "auto" :label "Auto"}
+         {:value "log" :label "Log"}
+         {:value "linear" :label "Linear"}]
+        (fn
+          ([cursor] (get-in cursor [:scale]))
+          ([cursor record]
+           (om/update! cursor [:scale] (:value record)))))
+    :target "map-shading-scale-select-component"
+    :path [:map :controls :colorchooser]}
+
+   {:name :map-shading-color-scheme-select
+    :f (partial
+        select-chooser/select-chooser-component
+        "Color scheme"
+        [{:value :YlGn :label "YellowGreen"}
+         {:value :YlGnBu :label "YellowGreenBlue"}
+         {:value :GnBu :label "GreenBlue"}
+         {:value :BuGn :label "BlueGreen"}
+         {:value :PuBuGn :label "PurpleBlueGreen"}
+         {:value :PuBu :label "PurbleBlue"}
+         {:value :BuPu :label "BluePurple"}
+         {:value :RdPu :label "RedPurple"}
+         {:value :PuR :label "PurpleRed"}
+         {:value :OrRd :label "OrangeRed"}
+         {:value :YlOrRd :label "YellowOrangeRed"}
+         {:value :YlOrBr :label "YellowOrangeBrown"}
+         {:value :Purples :label "Purples"}
+         {:value :Blues :label "Blues"}
+         {:value :Greens :label "Greens"}
+         {:value :Oranges :label "Oranges"}
+         {:value :Reds :label "Reds"}
+         {:value :Greys :label "Greys"}
+         {:value :PuOr :label "PurpleOrange"}
+         {:value :BrBG :label "Brown BlueGreen"}
+         {:value :PRGn :label "Purple Green - divergent"}
+         {:value :PiYG :label "Pink YellowGreen - divergent"}
+         {:value :RdBu :label "Red Blue - divergent"}
+         {:value :RdGy :label "Red Green - divergent"}
+         {:value :RdYlBu :label "Red Yellow Blue - divergent"}
+         {:value :RdYlGn :label "Red Yellow Green - divergent"}
+         {:value :Spectral :label "Spectral"}
+         {:value :Accent :label "Accent"}
+         {:value :Dark2 :label "Dark 2"}
+         {:value :Paired :label "Paired"}
+         {:value :Pastel1 :label "Pastel 1"}
+         {:value :Pastel2 :label "Pastel 2"}
+         {:value :Set1 :label "Set 1"}
+         {:value :Set2 :label "Set 2"}
+         {:value :Set3 :label "Set 3"}]
+        (fn
+          ([cursor] (get-in cursor [0]))
+          ([cursor record]
+           (om/update! cursor [0] (:value record)))))
+    :target "map-shading-color-scheme-select-component"
+    :path [:map :controls :colorchooser :scheme]}
+
+
+   {:name :map-shading-color-count-select
+    :f (partial
+        select-chooser/select-chooser-component
+        "# of colors"
+        [{:value "3" :label "3"}
+         {:value "4" :label "4"}
+         {:value "5" :label "5"}
+         {:value "6" :label "6"}
+         {:value "7" :label "7"}
+         {:value "8" :label "8"}
+         {:value "9" :label "9"}
+         {:value "10" :label "10"}
+         {:value "11" :label "11"}
+         {:value "12" :label "12"}]
+        (fn
+          ([cursor] (get-in cursor [1]))
+          ([cursor record]
+           (om/update! cursor [1] (:value record)))))
+    :target "map-shading-color-count-select-component"
+    :path [:map :controls :colorchooser :scheme]}
+
+
+
+
 
    {:name :company-close
     :f nav-button/nav-button-component
