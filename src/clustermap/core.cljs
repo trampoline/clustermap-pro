@@ -188,16 +188,6 @@
 
                          ;; specifications for dynamic components
                          :component-specs [
-                                           {:id :uk_region
-                                            :type :tag-checkboxes
-                                            :label "Region"
-                                            :sorted false
-                                            :visible true
-                                            :controls true
-                                            :tag-type "uk_regions"
-                                            :tags [{:value "osbl_european_region_region__eastern_euro_region" :label "Eastern"}
-                                                   {:value "osbl_european_region_region__london_euro_region" :label "London"}
-                                                   {:value "osbl_european_region_region__south_east_euro_region" :label "South East"}]}
 
                                            {:id :age
                                             :type :checkboxes
@@ -593,6 +583,7 @@
                                  :label-formatter (fn [] (this-as this (num/mixed (.-value this))))}]
                       :bar-width 20
                       :bar-color "#28828a"
+                      :chart-height 600
 
                       :tag-type "l4_sector"
                       :tag-data nil
