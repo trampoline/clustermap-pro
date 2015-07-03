@@ -68,7 +68,7 @@
         <div class="grdc">
           <header class="page-header">
             <div id="reset-all-component">
-              <h1 class="logo">MedCity</h1>
+              <h1 class="logo">Trampoline Pro (beta): Greater London</h1>
             </div>
             <ul class="nav-links">
               <li class="link-intro"><a href="#">Introduction</a></li>
@@ -87,17 +87,9 @@
       </div>
       <div class="grdr">
         <div id="intro" class="grdc intro">
-          <h2>MedCity Map</h2>
+          <h2>Trampoline Pro (beta): Greater London</h2>
           <p>
-            Established by the Mayor of London with the capital's three Academic Health Science Centres - 
-            Imperial College Academic Health Centre, King's Health Partners, and UCL Partners - 
-            MedCity is a unique collaboration that brings together the outstanding life sciences 
-            strengths of London and the greater south east.
-            Over the next 20 years, MedCity will position the region as a world-leading, 
-            interconnected hub for research, development, manufacturing and commercialisation 
-            by championing collaboration and entrepreneurship, promoting a joined up and 
-            globally distinct life sciences offer, and providing a visible "go-to" point for
-            industry and investors.
+            This is a functional beta of Trampoline Pro, a cloud business information solution for analysts and policy-makers. The platform provides a range of data feeds and analytic tools focusing on business activity and trends.
             
           </p>
         </div>
@@ -191,8 +183,15 @@
                                     </div>
                                     <div><span>Select to show details under each company location marker</span>
                                     </div>
+                                    <div><a data-toggle="collapse" href="#advanced-options" aria-expanded="false" aria-controls="advanced-options" class="btn btn-link">Advanced options</a></div>
                                   </div>
-                                  
+                                  <div id="advanced-options" class="panel-options collapse">
+                                    <p>Shading&nbsp;<span id="map-shading-var-select-component" class="custom-select"></span></p>
+                                    <p>Statistic&nbsp;<span id="map-shading-stat-select-component" class="custom-select"></span></p>
+                                    <p>Scale&nbsp;<span id="map-shading-scale-select-component" class="custom-select"></span></p>
+                                    <p>Colors&nbsp;<span id="map-shading-color-scheme-select-component" class="custom-select"></span></p>
+                                    <p>Colors&nbsp;<span id="map-shading-color-count-select-component" class="custom-select"></span></p>
+                                  </div>
                                 </div>
                                 <div class="panel-body">
                                   <div id="map-component"></div>
@@ -215,7 +214,7 @@
                               </div>
                               <div class="panel">
                                 <div class="panel-heading">
-                                  <h4>Trends</h4>
+                                  <h4>Trends<small>(grouped by reported year)</small></h4>
                                   <div><span id="trends-timeline-var-select-component" class="custom-select"></span></div>
                                 </div>
                                 <div class="panel-body">
@@ -227,7 +226,7 @@
                                   <div class="panel-row">
                                     <div class="panel">
                                       <div class="panel-heading">
-                                        <h4>Company size - turnover</h4>
+                                        <h4>Company size - latest turnover<small>(UK-wide)</small></h4>
                                       </div>
                                       <div class="panel-body">
                                         <div id="revenue-bands-chart-component" class="chart-container"></div>
@@ -235,7 +234,7 @@
                                     </div>
                                     <div class="panel">
                                       <div class="panel-heading">
-                                        <h4>Company size - employees</h4>
+                                        <h4>Company size - latest employees<small>(UK-wide)</small></h4>
                                       </div>
                                       <div class="panel-body">
                                         <div id="employment-bands-chart-component" class="chart-container"></div>

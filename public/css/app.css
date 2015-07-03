@@ -2785,6 +2785,15 @@ button.close {
     padding: 20px 15px;
   }
 }
+.leaflet-container {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
+.leaflet-container p {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
+.leaflet-container a {
+  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+}
 .map-marker-1 {
   background-position: 0 0;
 }
@@ -2940,7 +2949,7 @@ h1.logo {
   height: 50px;
   width: 176px;
   margin: 0 auto;
-  background: url('../img/logo-medcity.png') 50% 50% no-repeat;
+  background: url('') 50% 50% no-repeat;
 }
 .company-search {
   border-top: 1px solid #2d2d2d;
@@ -3065,7 +3074,7 @@ h1.logo {
 }
 .intro {
   height: 388px;
-  background: #1c9d86 url('../img/banner-medcity.jpg') 50% 100% no-repeat;
+  background: #1c9d86 url('') 50% 100% no-repeat;
   background-size: cover;
   color: #fff;
   vertical-align: middle;
@@ -3568,7 +3577,7 @@ h1.logo {
   line-height: 12px;
   white-space: nowrap;
   font-size: 12px!important;
-  margin: 0px;
+  margin: 1px 1px 1px 1px;
 }
 .marker-info .minichart {
   width: 60px;
