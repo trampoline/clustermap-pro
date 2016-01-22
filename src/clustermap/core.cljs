@@ -228,49 +228,66 @@
                                             :options [{:value "latest" :label "High growth companies" :filter scaleup-filter}
                                                       ]}
 
-                                           {:id :nontoxic-l3-sector
-                                            :type :tag-checkboxes
-                                            :label "L3 Sector"
-                                            :sorted true
+                                           {:id :sector
+                                            :type :checkboxes
+                                            :label "Sector"
                                             :visible true
-                                            :controls true
-                                            :tag-type "nontoxic_sector"
-                                            :tags [;; {:value "" :label "Any" :omit-description true}
-                                                   {:value "digi_tech" :label "Digital Technologies"}
-                                                   {:value "lifesci_health" :label "Life Sciences & Healthcare"}
-                                                   {:value "pub_broad" :label "Publishing & Broadcasting"}
-                                                   {:value "other_scitechmanf" :label "Other scientific/technological manufacture"}
-                                                   {:value "other_scitech_serv" :label "Other scientific/technological services"}]}
-
-                                           {:id :l4-sector
-                                            :type :tag-checkboxes
-                                            :label "L4 Sector"
                                             :sorted true
-                                            :visible true
                                             :controls true
-                                            :tag-type "l4_sector"
-                                            :tags [;; {:value "" :label "Any" :omit-description true}
-                                                   {:value "comp_elec_manf" :label "Computer & Electronic manufacturing (inc. peripherals)"}
-                                                   {:value "dig_comp_serv" :label "Digital & Computer services"}
-                                                   {:value "med_opt_equip_manf" :label "Medical (exc. pharmaceutical) & optical equipment manufacture"}
-                                                   {:value "pharm_manf" :label "Pharmaceutical manufacture"}
-                                                   {:value "biotech_randd" :label "Biotechnology research and development"}
-                                                   {:value "healthcare_serv" :label "Healthcare services (including veterinary)"}
-                                                   {:value "comm_equip_manf" :label "Communication Equipment manufacture"}
-                                                   {:value "pub_mktg_graph_des" :label "Publishing, Marketing & Graphic Design"}
-                                                   {:value "aud_vis_broad" :label "Audio-visual broadcasting"}
-                                                   {:value "telecomm_serv" :label "Telecommunication services by wire, wireless and satellite (inc. news agency activities)"}
-                                                   {:value "manf_rep_air_space" :label "Manufacture and repair of air and spacecraft"}
-                                                   {:value "def_tech" :label "Defence technologies (weapons, ammunition, explosives & military vehicles)"}
-                                                   {:value "auto_manf" :label "Automotive manufacture (inc. vehicles, trailers, railroad, shipbuilding)"}
-                                                   {:value "chem_manf" :label "Chemical & Chemical Product manufacturing (exc. Pharmaceuticals)"}
-                                                   {:value "elec_mach_manf" :label "Electrical Machinery manufacture"}
-                                                   {:value "non_elec_mach_manf" :label "Non-electrical Machinery manufacture"}
-                                                   {:value "precision_eng" :label "Precision engineering (watches, clocks, jewellery, non-electronic instruments & appliances)"}
-                                                   {:value "aero_transp" :label "Aerospace transport"}
-                                                   {:value "arch_eng_surv" :label "Architecture, Engineering & Quantity Surveying"}
-                                                   {:value "higher_ed" :label "Higher education (college, university and post-graduate)"}
-                                                   {:value "humanitities_randd" :label "Research & Development on humanities, natural sciences, social sciences and engineering"}]}
+                                            :options [;; {:value "any" :label "Any" :filter nil :omit-description true}
+                                                      #_{:value "any" :label "Has SIC"
+                                                         :filter {:range {"!sic07" {:gte ""}}}}
+                                                      {:value "sectionA" :label "Agriculture, forestry & fishing"
+                                                       :filter {:range {"!sic07" {:gte "01110" :lt "05101"}}}}
+                                                      {:value "sectionB" :label "Mining & quarrying"
+                                                       :filter {:range {"!sic07" {:gte "05101" :lt "10110"}}}}
+                                                      {:value "sectionC" :label "Manufacturing"
+                                                       :filter {:range {"!sic07" {:gte "10110" :lt "35110"}}}}
+                                                      {:value "sectionD" :label "Electricity, gas & air conditioning"
+                                                       :filter {:range {"!sic07" {:gte "35110" :lt "36000"}}}}
+                                                      {:value "sectionE" :label "Water, sewage & waste"
+                                                       :filter {:range {"!sic07" {:gte "36000" :lt "41100"}}}}
+                                                      {:value "sectionF" :label "Construction"
+                                                       :filter {:range {"!sic07" {:gte "41100" :lt "45111"}}}}
+                                                      {:value "sectionG" :label "Wholesale, retail & automative repair	"
+                                                       :filter {:range {"!sic07" {:gte "45111" :lt "49100"}}}}
+                                                      {:value "sectionH" :label "Transportation and storage"
+                                                       :filter {:range {"!sic07" {:gte "49100" :lt "55100"}}}}
+                                                      {:value "sectionI" :label "Accommodation, food & drink"
+                                                       :filter {:range {"!sic07" {:gte "55100" :lt "58110"}}}}
+                                                      #_{:value "sectionJ" :label "Information and communication"
+                                                         :filter {:range {"!sic07" {:gte "58110" :lt "64110"}}}}
+                                                      {:value "sectionJ1" :label "Publishing & Broadcasting"
+                                                       :filter {:range {"!sic07" {:gte "58110" :lt "61100"}}}}
+                                                      {:value "sectionJ2" :label "Telecommunications"
+                                                       :filter {:range {"!sic07" {:gte "61100" :lt "62000"}}}}
+                                                      {:value "sectionJ3" :label "IT: Software development"
+                                                       :filter {:range {"!sic07" {:gte "62000" :lt "63120"}}}}
+                                                      {:value "sectionJ4" :label "IT: Web & information services"
+                                                       :filter {:range {"!sic07" {:gte "63120" :lt "64000"}}}}
+                                                      {:value "sectionK" :label "Financial & insurance"
+                                                       :filter {:range {"!sic07" {:gte "64110" :lt "68100" }}}}
+                                                      {:value "sectionL" :label "Real estate"
+                                                       :filter {:range {"!sic07" {:gte "68100" :lt "69101"}}}}
+                                                      {:value "sectionM" :label "Scientific & technical services"
+                                                       :filter {:range {"!sic07" {:gte "69101" :lt "77110"}}}}
+                                                      {:value "sectionN" :label "Administrative & support services"
+                                                       :filter {:range {"!sic07" {:gte "77110" :lt "84110"}}}}
+                                                      {:value "sectionO" :label "Government & defence"
+                                                       :filter {:range {"!sic07" {:gte "84110" :lt "85100"}}}}
+                                                      {:value "sectionP" :label "Education"
+                                                       :filter {:range {"!sic07" {:gte "85100" :lt "86101"}}}}
+                                                      {:value "sectionQ" :label "Health & social work"
+                                                       :filter {:range {"!sic07" {:gte "86101" :lt "90010"}}}}
+                                                      {:value "sectionR" :label "Arts & entertainment"
+                                                       :filter {:range {"!sic07" {:gte "90010" :lt "94110"}}}}
+                                                      {:value "sectionS" :label "Other services"
+                                                       :filter {:range {"!sic07" {:gte "94110" :lt "97000"}}}}
+                                                      {:value "sectionT" :label "Household activities"
+                                                       :filter {:range {"!sic07" {:gte "97000" :lt "99000" }}}}
+                                                      {:value "sectionU" :label "International organisations"
+                                                       :filter {:range {"!sic07" {:gte "99000"}}}}
+                                                      ]}
 
                                            ]
 
@@ -383,9 +400,9 @@
                                                    [:div.metric.metric-2
                                                     [:span.name "Emp"] [:span.value (num/compact (:latest_employee_count i))]]]])
                                :item-click-fn (fn [r e]
-                                                     (make-company-selection (:natural_id r))
-                                                     (app/navigate @app-instance "company")
-                                                     (.log js/console (clj->js ["CLICK" r e])))}
+                                                (make-company-selection (:natural_id r))
+                                                (app/navigate @app-instance "company")
+                                                (.log js/console (clj->js ["CLICK" r e])))}
 
                     :zoom nil
                     :bounds nil
