@@ -5,3 +5,6 @@
 /target
 /checkouts
 /.lein-repl-history
+/cljs-out/none/cl*
+/cljs-out/simple/cl*
+/cljs-out/advanced/cl*
