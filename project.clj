@@ -2,42 +2,43 @@
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2356" :scope "provided"]
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha" :scope "provided"]
-                 [weasel "0.5.0"]
-                 [figwheel "0.1.5-SNAPSHOT"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.7.228" :scope "provided"]
+                 [org.clojure/core.async "0.2.374" :scope "provided"]
                  [domina "1.0.3"]
-                 [jayq "2.5.2"]
-                 [om "0.8.0-alpha2"]
-                 [prismatic/om-tools "0.3.10" :exclusions [org.clojure/clojure]]
-                 [sablono "0.3.1"]
+                 [jayq "2.5.4"]
+                 [org.omcljs/om "1.0.0-alpha26"]
+                 [prismatic/om-tools "0.4.0" :exclusions [org.clojure/clojure]]
+                 [cljsjs/react "0.14.3-0"]
+                 [cljsjs/react-dom "0.14.3-1"]
+                 [cljsjs/react-dom-server "0.14.3-0"]
+                 [sablono "0.5.3"]
                  [hiccups "0.3.0"]
-                 [secretary "1.2.0"]
-                 [com.andrewmcveigh/cljs-time "0.3.1"]
-
+                 [secretary "1.2.3"]
+                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 [binaryage/devtools "0.4.1"]
                  [clustermap-components "0.1.0-SNAPSHOT"]
                  ]
 
-;;  :exclusions [org.clojure/google-closure-library
-;;               org.clojure/google-closure-library-third-party
-;;               goog-jar]
-
   :jvm-opts ["-Xmx1g"
              "-server"
-             "-XX:MaxPermSize=128m"
              "-XX:+CMSClassUnloadingEnabled"
              "-XX:+UseConcMarkSweepGC"]
 
   :source-paths ["src"]
 
-  :plugins [[lein-cljsbuild "1.0.3"]
-            [lein-figwheel "0.1.5-SNAPSHOT"]]
+  :plugins [[lein-cljsbuild "1.1.2"]
+            [lein-figwheel "0.5.0-3"]]
+
+  :profiles {:dev {:dependencies [[weasel "0.7.0"]
+                                  [figwheel "0.5.0-3"]]}}
+  :figwheel {:css-dirs ["public/css"]}
 
   :cljsbuild {
               :builds {:none
                        {:source-paths ["src"
                                        "checkouts/clustermap-components/src"]
+                        :figwheel {:on-jsload "clustermap.core/init"}
                         :compiler {
                                    ;; resources/public path necessary for figwheel, so frigged
                                    ;; with softlink from resources/public to cljs-out/none
@@ -64,7 +65,7 @@
                                    :source-map "cljs-out/simple/clustermap.js.map"
                                    :output-dir "cljs-out/simple/cljs"
                                    :optimizations :simple
-                                   :pretty-print true
+                                   :pretty-print false
                                    :output-wrapper false}}
 
                        :advanced
