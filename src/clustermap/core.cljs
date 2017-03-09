@@ -203,7 +203,7 @@
 
                          ;; specifications for dynamic components
                          :component-specs [
-
+                                           #_
                                            {:id :age
                                             :type :checkboxes
                                             :label "Age"
@@ -212,18 +212,15 @@
                                                       {:value "new" :label "< 5 years" :filter {:range {"!formation_date" {:gte "2009-01-01"}}}}
                                                       {:value "old" :label ">= 5 years" :filter {:range {"!formation_date" {:lt "2009-01-01"}}}}]}
 
-                                           {:id :reg-year
+                                           {:id :nuts1-region
                                             :type :checkboxes
-                                            :label "Reg. Year"
-                                            :visible true
+                                            :label "Regions"
+                                            :sorted true
+                                            :visible false
                                             :controls true
-                                            :options [;; {:id "any" :filter nil :label "Any"}
-                                                      {:value "2010" :label "2010" :filter {:range {"!formation_date" {:gte "2010-01-01" :lt "2011-01-01"}}}}
-                                                      {:value "2011" :label "2011" :filter {:range {"!formation_date" {:gte "2011-01-01" :lt "2012-01-01"}}}}
-                                                      {:value "2012" :label "2012" :filter {:range {"!formation_date" {:gte "2012-01-01" :lt "2013-01-01"}}}}
-                                                      {:value "2013" :label "2013" :filter {:range {"!formation_date" {:gte "2013-01-01" :lt "2014-01-01"}}}}
-                                                      ]}
+                                            :options (regions/nuts1-uk-filter-options)}
 
+                                           #_
                                            {:id :latest-turnover
                                             :type :checkboxes
                                             :label "Turnover"
@@ -237,13 +234,6 @@
                                                       {:value "high" :label "> £100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
                                                       ]}
 
-
-                                           {:id :highgrowth
-                                            :type :checkboxes
-                                            :label "High growth"
-                                            :visible true
-                                            :options [{:value "latest" :label "High growth companies" :filter scaleup-filter}
-                                                      ]}
 
                                            {:id :sector
                                             :type :checkboxes
@@ -304,6 +294,59 @@
                                                        :filter {:range {"!sic07" {:gte "97000" :lt "99000" }}}}
                                                       {:value "sectionU" :label "International organisations"
                                                        :filter {:range {"!sic07" {:gte "99000"}}}}
+                                                      ]}
+                                           {:id :highgrowth
+                                            :type :checkboxes
+                                            :label "High growth"
+                                            :visible true
+                                            :options [{:value "latest" :label "High growth companies" :filter scaleup-filter}
+                                                      ]}
+
+                                           {:id :latest-turnover
+                                            :type :checkboxes
+                                            :label "Turnover"
+                                            :visible false
+                                            :controls true
+                                            :options [;; {:value "any" :label "Any" :filter nil}
+                                                      {:value "min" :label "Less than £50,000" :filter {:range {"!latest_turnover" {:lt 50000}}}}
+                                                      {:value "low" :label "£50 – 100,000" :filter {:range {"!latest_turnover" {:gte 50000 :lt 100000}}}}
+                                                      {:value "lowmid" :label "£100 – 250,000" :filter {:range {"!latest_turnover" {:gte 100000 :lt 250000}}}}
+                                                      {:value "mid" :label "£250 – 500,000" :filter {:range {"!latest_turnover" {:gte 250000 :lt 500000}}}}
+                                                      {:value "highmid" :label "£500 – £1 million" :filter {:range {"!latest_turnover" {:gte 500000 :lt 1000000}}}}
+                                                      {:value "higher" :label "£1 – 5 million" :filter {:range {"!latest_turnover" {:gte 1000000 :lt 5000000}}}}
+                                                      {:value "highest" :label "More than £5 million" :filter {:range {"!latest_turnover" {:gte 5000000}}}}
+                                                      ]}
+
+                                           {:id :employee-count
+                                            :type :checkboxes
+                                            :label "Employees"
+                                            :visible true
+                                            :controls true
+                                            :options [{:value "min" :label "1–4" :filter {:range {"!latest_employee_count" {:lte 4}}}}
+                                                      {:value "min+" :label "5–9" :filter {:range {"!latest_employee_count" {:gt 4 :lte 9}}}}
+                                                      {:value "min++" :label "10–19" :filter {:range {"!latest_employee_count" {:gt 9 :lte 19}}}}
+                                                      {:value "min+++" :label "20–49" :filter {:range {"!latest_employee_count" {:gt 19 :lte 49}}}}
+                                                      {:value "mid" :label "50–99" :filter {:range {"!latest_employee_count" {:gt 49 :lte 99}}}}
+                                                      {:value "mid+" :label "100–249" :filter {:range {"!latest_employee_count" {:gt 99 :lte 249}}}}
+                                                      {:value "mid++" :label "250–499" :filter {:range {"!latest_employee_count" {:gt 249 :lte 499}}}}
+                                                      {:value "mid+++" :label "500–2499" :filter {:range {"!latest_employee_count" {:gt 499 :lte 2499}}}}
+                                                      {:value "max" :label "2500 or more" :filter {:range {"!latest_employee_count" {:gt 2499}}}}]}
+
+                                           {:id :reg-year
+                                            :type :checkboxes
+                                            :label "Founding Date"
+                                            :visible true
+                                            :controls true
+                                            :options [;; {:id "any" :filter nil :label "Any"}
+                                                      {:value "oldest" :label "Before 1900" :filter {:range {"!formation_date" {:lt "1900-01-01"}}}}
+                                                      {:value "1900" :label "1900–1949" :filter {:range {"!formation_date" {:gte "1900-01-01" :lt "1950-01-01"}}}}
+                                                      {:value "1950" :label "1950–1969" :filter {:range {"!formation_date" {:gte "1950-01-01" :lt "1970-01-01"}}}}
+                                                      {:value "1970" :label "1970–1979" :filter {:range {"!formation_date" {:gte "1970-01-01" :lt "1980-01-01"}}}}
+                                                      {:value "1980" :label "1980–1989" :filter {:range {"!formation_date" {:gte "1980-01-01" :lt "1990-01-01"}}}}
+                                                      {:value "1990" :label "1990–1999" :filter {:range {"!formation_date" {:gte "1990-01-01" :lt "2000-01-01"}}}}
+                                                      {:value "2000" :label "2000–2004" :filter {:range {"!formation_date" {:gte "2000-01-01" :lt "2004-01-01"}}}}
+                                                      {:value "2005" :label "2005–2009" :filter {:range {"!formation_date" {:gte "2005-01-01" :lt "2010-01-01"}}}}
+                                                      {:value "2010" :label "2010 or later" :filter {:range {"!formation_date" {:gte "2010-01-01"}}}}
                                                       ]}
 
                                            ]
