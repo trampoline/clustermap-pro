@@ -63,6 +63,12 @@
       deref
       clustermap.app/get-state))
 
+(def narrow-sectors
+  (sic07/l4-nontoxic-tags))
+
+(def l4-tag->description
+  (sic07/mk-l4-nontoxic->description))
+
 (def max-lag-months 22)
 
 ;; tests that latest and previous accounts are not too old
@@ -234,7 +240,25 @@
                                                       {:value "high" :label "> £100m" :filter {:range {"!latest_turnover" {:gte 100000000}}}}
                                                       ]}
 
+                                           {:id :nontoxic-l3-sector
+                                            :type :tag-checkboxes
+                                            :label "Broad Sectors"
+                                            :sorted true
+                                            :visible false
+                                            :controls true
+                                            :tag-type "nontoxic_sector"
+                                            :tags (sic07/l3-nontoxic-tags)}
 
+                                           {:id :l4-sector
+                                            :type :tag-checkboxes
+                                            :label "Narrow Sectors"
+                                            :sorted true
+                                            :visible false
+                                            :controls true
+                                            :tag-type "l4_nontoxic_sector"
+                                            :tags narrow-sectors}
+
+                                           #_
                                            {:id :sector
                                             :type :checkboxes
                                             :label "Sector"
@@ -406,7 +430,7 @@
          ;; :boundaryline-collections [[0 "nuts_2"] [8 "nuts_3"] [9 "nutsish_4"] [11 "nutsish_5"]]
          ;; :boundaryline-collections [[0 "uk_boroughs"] [10 "uk_wards"]]
          :boundaryline-collections [[0 "uk_counties"][7 "uk_boroughs"][12 "uk_wards"]]
-         :controls {:initial-bounds  [[51.23956626148356 -0.59600830078125][51.767839887322154 0.37078857421875]]
+         :controls {:initial-bounds  [[59.54 5.3] [49.29 -11.29]] ;[[51.23956626148356 -0.59600830078125][51.767839887322154 0.37078857421875]]
                     :map-options {:zoomControl true
                                   :dragging true
                                   :touchZoom true
@@ -651,16 +675,18 @@
                               :index-type "company"
                               :nested-path "?tags"
                               :nested-attr "tag"
-                              :nested-filter {:term {:type "l4_sector"}}
+                              :nested-filter {:term {:type "l4_nontoxic_sector"}}
                               :stats-attr "!latest_turnover"}
                       :metrics [{:metric :sum
                                  :title "Total latest turnover (UK-wide) (£)"
                                  :label-formatter (fn [] (this-as this (num/mixed (.-value this))))}]
-                      :bar-width 20
+                      :bar-width 10
                       :bar-color "#28828a"
                       :chart-height 600
-
-                      :tag-type "l4_sector"
+                      :xlabel-formatter (fn [] (this-as this (some-> this .-value l4-tag->description)))
+                      :point-formatter (chart-helpers/mk-tooltip-point-formatter {:key-fmt l4-tag->description})
+                      :chart-type "bar"
+                      :tag-type "l4_nontoxic_sector"
                       :tag-data nil
                       :tag-agg-data nil}
 
