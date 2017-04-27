@@ -101,23 +101,23 @@
       [:div.panel
        [:div.panel-body
         [:h3 "Directors"]
-        [:table.responsive
-         [:table.table
-          [:thead
-           [:tr [:th "Name"] [:th "Appointment date"] [:th "Resignation date"]]]
-          (into [:tbody]
-                (let [ds (:directorships record)
-                      cds (filter (complement :resignation_date) ds)
-                      scds (reverse (sort-by :appointment_date cds))
-                      rds (filter :resignation_date ds)
-                      srds (reverse (sort-by :resignation_date rds))
-                      sds (concat scds srds)]
-                  (for [d sds]
-                    [:tr
-                     [:td (:name d)]
-                     [:td (time/format-date (:appointment_date d))]
-                     [:td (time/format-date (:resignation_date d))]
-                     ])))]]]]]
+        [:table.responsive.table
+
+         [:thead
+          [:tr [:th "Name"] [:th "Appointment date"] [:th "Resignation date"]]]
+         (into [:tbody]
+               (let [ds (:directorships record)
+                     cds (filter (complement :resignation_date) ds)
+                     scds (reverse (sort-by :appointment_date cds))
+                     rds (filter :resignation_date ds)
+                     srds (reverse (sort-by :resignation_date rds))
+                     sds (concat scds srds)]
+                 (for [d sds]
+                   [:tr
+                    [:td (:name d)]
+                    [:td (time/format-date (:appointment_date d))]
+                    [:td (time/format-date (:resignation_date d))]
+                    ])))]]]]
 
 
      ]]
